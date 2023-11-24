@@ -1,0 +1,57 @@
+# Workspace directory
+workspace: "/ABComparative/ABComparative/results/"
+
+# Scripts directory
+scripts: "/ABComparative/ABComparative/workflow/scripts/"
+
+# Polypolish
+polypolish_threads: 8
+
+# Busco
+busco_lineage: "bacteria_odb10"
+
+# Quast
+quast_threads: 4 
+
+# Prokka
+prokka_ref_threads: 8
+prokka_ref_kingdom: "Bacteria"
+
+prokka_strain_threads: 8
+prokka_strain_kingdom: "Bacteria"
+
+# Roary
+roary_pairwise_threads: 8
+roary_pairwise_pident: 90
+
+roary_within_group_threads: 8
+roary_within_group_pident: 90
+
+# Move GFF files
+move_gff_script: "move_gffs.sh"
+group_info: "groups_original.yml"
+
+# Move FAA files
+move_faa_script: "move_faas.sh"
+
+# Egg-NOG-mapper
+emapper_core_pident: 30
+emapper_core_evalue: 0.001
+emapper_core_score: 60
+emapper_core_query_cover: 70
+emapper_core_subject_cover: 70
+emapper_core_cpu: 8 
+
+emapper_shells_pident: 30
+emapper_shells_evalue: 0.001
+emapper_shells_score: 60
+emapper_shells_query_cover: 70
+emapper_shells_subject_cover: 70
+emapper_shells_cpu: 8 
+
+# COG visualization
+types_core: "CORE"
+types_shells: "SHELLS"
+
+# VF screening
+# dbname: "compact_vfdb"
