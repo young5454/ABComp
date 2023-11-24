@@ -1,3 +1,6 @@
+# This is a default configuration setting for the overall Snakemake run
+# Please adjust the parameters or names accordingly
+
 # Workspace directory
 workspace: "/ABComparative/ABComparative/results/"
 
@@ -47,8 +50,8 @@ emapper_shells_subject_cover: 70
 emapper_shells_cpu: 8 
 
 # COG visualization
-types_core: "CORE"
-types_shells: "SHELLS"
+types_core: "Core"
+types_shells: "Shells"
 
 # VF screening
 # dbname: "compact_vfdb"
