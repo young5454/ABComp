@@ -3,3 +3,6 @@ resources/**
 logs/**
 .snakemake
 .snakemake/**
+/.ipynb_checkpoints/
+__pycache__
+busco_*.log
