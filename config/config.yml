@@ -1,9 +1,6 @@
 # Workspace directory
 workspace: "/ABComparative/ABComparative/results/"
 
-# Scripts directory
-scripts: "/ABComparative/ABComparative/workflow/scripts/"
-
 # Polypolish
 polypolish_threads: 8
 
