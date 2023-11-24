@@ -6,9 +6,6 @@ configfile: "config/config.yml"
 # Main working directory
 workspace = config["workspace"]
 
-# Path to scripts directory
-scripts = config["scripts"]
-
 # Define GROUP, STRAIN and REF wildcards
 GROUP, STRAIN = glob_wildcards(workspace + "assembly/{group}_{strain}/genome")
 REF, = glob_wildcards(workspace + "assembly/ref/genome/{ref}.fasta")
