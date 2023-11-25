@@ -58,24 +58,6 @@ def gene_list_maker(input_csv_file, save_path):
         
         print("Processing complete. Check save_path for results.")
 
-        # for row in csv_reader:
-        #     # Check if both columns (15th and 16th, indexed from 0) have data
-        #     if row[14] and row[15]:
-        #         core_all.write(row[14] + '\n')  # Write to core_all.txt
-        #         # Check annotation 
-        #         if row[2] == 'hypothetical protein':
-        #             core_hypo.write(row[14] + '\n')
-        #         else:
-        #             core_nonhypo.write(row[14] + '\n')
-        #     elif row[14] or row[15]:
-        #         shells_all.write(row[14] + row[15] + '\n')  # Write to shells_all.txt
-        #         # Check annotation 
-        #         if row[2] == 'hypothetical protein':
-        #             shells_hypo.write(row[14] + row[15] + '\n')
-        #         else:
-        #             shells_nonhypo.write(row[14] + row[15] + '\n')
-        # print("Processing complete. Check save_path for results.")
-
 
 def main():    
     # Argument parser
