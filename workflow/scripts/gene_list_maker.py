@@ -3,7 +3,7 @@ import argparse
 
 def gene_list_maker(input_csv_file, save_path):
     """
-    Makes 6 gene lists for two-strain ROARY results.
+    Makes 6 gene lists for multi-strain Roary results.
     core_all.txt, core_nonhypo.txt, core_hypo.txt
     shells_all.txt, shells_nonhypo.txt, shells_hypo.txt
     """
