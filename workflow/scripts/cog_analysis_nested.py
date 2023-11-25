@@ -98,7 +98,7 @@ def main():
     nums = sum(list(cog_dictionary_weighted.values()))
     print('Total number of queries:', "{:.1f}".format(nums))
 
-    # Larger grouping: group labels into 4 categories
+    # Larger grouping: group labels into 6 categories
     grouped = {'Cellular processing and signaling': 0, 'Hypothetical protein': 0,  'Information storage and processing': 0, 'Metabolism': 0,
             'Mobileome': 0, 'Poorly characterized': 0}
 
@@ -135,6 +135,7 @@ def main():
         if category == 'Hypo':
             continue
         else:
+            # Print weighted count in three decimal places
             print('Number of genes in', category + ':', "{:.3f}".format(grouped[category]))
     print('+--------------------------------------------+')
     grouped_nums = sum(list(grouped.values()))
