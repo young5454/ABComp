@@ -258,12 +258,9 @@ def main():
     parser.add_argument('--text_path', required=True, help='Path to gene list. Never omit a / at the end')
     parser.add_argument('--save_path', required=True, help='Path to save gene FASTAs. Never omit a / at the end')
     parser.add_argument('--faa_path', required=True, help='Path to FAA file')
-    # parser.add_argument('--all_faas', required=True, help='List of all faa file paths in current group. Format: path1$path2$path3.. in one single string')
     parser.add_argument('--gpa', required=True, help='Path to gene_presence_absence.csv')
-    parser.add_argument('--all_roary', required=False, help='Number of all ROARY genes, annotated from PROKKA')
-    # parser.add_argument('--all_roary_core', required=True, help='Number of all ROARY core genes, including non-protein-coding genes')
-    # parser.add_argument('--all_roary_shell', required=True, help='Number of all ROARY shell genes, including non-protein-coding genes')
-    parser.add_argument('--summary', required=True, help='Path to ROARY summary_statistics.txt')
+    parser.add_argument('--all_roary', required=False, help='Number of all Roary genes, annotated from Prokka')
+    parser.add_argument('--summary', required=True, help='Path to Roary summary_statistics.txt')
 
     args = parser.parse_args()
 
@@ -271,25 +268,9 @@ def main():
     save_path = args.save_path
     gpa = args.gpa
     all_roary_genes = args.all_roary
-    # roary_core_genes = int(args.all_roary_core)
-    # roary_shell_genes = int(args.all_roary_shell)
     summary = args.summary
     faa_path = args.faa_path
 
-    # Split input faa_files into a list type
-    # all_faa_files = all_faas.split('$')
-    ## Change to all_faas as the directory path to faas
-
-    # # List all files in the directory
-    # files = os.listdir(all_faas)
-
-    # # Filter only the .txt files
-    # #all_faa_files = [all_faas + file for file in files if file.endswith('.faa')]
-    # print(all_faa_files)
-
-    # faa_file = all_faa_files[1]
-
-    ## Change to path to gene_presence_absence.csv
     # Open the CSV file and output files
     with open(gpa, mode='r', newline='') as csv_file:
         csv_reader = csv.reader(csv_file)
@@ -309,19 +290,17 @@ def main():
     cds_shells_non_hypo_count = shells_nonhypo_fasta(all_faa_files, text_path, save_path)
     cds_shells_hypo_count = shells_hypo_fasta(all_faa_files, text_path, save_path)
     
-    ### 11/17/23: changed from manually giving integer input to giving path summary_statistics.txt
-    # Open summary_statistics and obtain roary_core & roary_shell genes
+    # Open summary_statistics.txt and parse Roary core & shell genes
     with open(summary, 'r') as file:
-        # Splitting the data by lines
+        # Split the data by lines
         data = file.read()
         lines = data.strip().split('\n')
 
-        # Extracting Core genes and Shell genes numbers
+        # Extract Roary core & shell genes
         roary_core_genes = int(lines[0].split()[-1])
         roary_shell_genes = int(lines[2].split()[-1])
 
-            
-    # Print Result Statistics
+    # Print result statistics
     print('+--------------------------------------------------------------------+')
     print('+                          RESULT STATISTICS                         +')
     print('+--------------------------------------------------------------------+')
