@@ -333,9 +333,6 @@ rule all:
         expand(workspace + "all_groups/{group}/emapper-shells/", group=GROUP),
         expand(workspace + "all_groups/{group}/cog_plots/", group=GROUP),
 
-        ### VF screening output
-        expand(workspace + "vf/{group}/", group=GROUP),
-
 
 # Rule to run Polypolish for polishing long-read assemblies with Illumina paired-end short reads
 rule polypolish:
