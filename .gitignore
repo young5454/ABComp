@@ -6,5 +6,5 @@ logs/**
 /.ipynb_checkpoints/
 __pycache__
 busco_*.log
-./rm_fasta.sh
-.github/*
+rm_fasta.sh
+.github/workflows/
