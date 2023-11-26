@@ -24,7 +24,7 @@ prokka_strain_kingdom: "Bacteria"
 roary_pairwise_threads: 8
 roary_pairwise_pident: 90
 
-roary_within_group_threads: 8
+roary_within_group_threads: 10
 roary_within_group_pident: 90
 
 # Move GFF files
@@ -50,8 +50,8 @@ emapper_shells_subject_cover: 70
 emapper_shells_cpu: 8 
 
 # COG visualization
-types_core: "Core"
-types_shells: "Shells"
+types_core: "core"
+types_shells: "shell"
 
 # VF screening
 # dbname: "compact_vfdb"
