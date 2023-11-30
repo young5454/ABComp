@@ -25,3 +25,7 @@ conda env create --name env_roary --file workflow/envs/env_roary.yml
 # Egg-NOG-mapper & Downstream analyses
 echo Creating conda environment for Egg-NOG-mapper and more downstream analyses: env_emapper ...
 conda env create --name env_emapper --file workflow/envs/env_emapper.yml 
+
+# Abricate
+echo Creating conda environment for ABRicate: env_abricate ...
+conda env create --name env_abricate --file workflow/envs/env_abricate.yml 

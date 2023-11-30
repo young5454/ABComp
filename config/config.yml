@@ -53,5 +53,6 @@ emapper_shells_cpu: 8
 types_core: "core"
 types_shells: "shell"
 
-# VF screening
-# dbname: "compact_vfdb"
+# ABRicate
+abricate_minid: 50
+abricate_mincov: 80

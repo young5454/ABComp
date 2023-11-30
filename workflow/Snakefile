@@ -333,6 +333,12 @@ rule all:
         expand(workspace + "all_groups/{group}/emapper-shells/", group=GROUP),
         expand(workspace + "all_groups/{group}/cog_plots/", group=GROUP),
 
+        ### Abricate directory - STRAIN
+        expand(workspace + "abricate/{group}_{strain}/", zip, group=GROUP, strain=STRAIN),
+
+        ### Abricate directory - REF
+        expand(workspace + "abricate/ref/{ref}", ref=REF)
+
 
 # Rule to run Polypolish for polishing long-read assemblies with Illumina paired-end short reads
 rule polypolish:
@@ -765,4 +771,74 @@ rule roary_visualization:
         --save_path {output.plot_dir}
 
         mv {params.group}_tree.newick {output.plot_dir}
+        """
+
+### 11/30 update: abricate
+rule abricate_strain:
+    input:
+        # Input FNAs are annotated gene nucleotide file
+        strain_fna=workspace + "annotation/{group}_{strain}/{group}_{strain}.fna",
+    output:
+        out_dir=directory(workspace + "abricate/{group}_{strain}/"),
+    params:
+        minid=config["abricate_minid"],
+        mincov=config["abricate_mincov"],
+    conda:
+        "env_abricate"
+    shell:
+        """
+        mkdir {output.out_dir}
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db ncbi {input.strain_fna} > {output.out_dir}/ncbi.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db argannot {input.strain_fna} > {output.out_dir}/argannot.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db card {input.strain_fna} > {output.out_dir}/card.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db megares {input.strain_fna} > {output.out_dir}/megares.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db plasmidfinder {input.strain_fna} > {output.out_dir}/plasmidfinder.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db resfinder {input.strain_fna} > {output.out_dir}/resfinder.tab
+        """
+
+
+rule abricate_ref:
+    input:
+        # Input FNAs are annotated gene nucleotide file
+        ref_fna=workspace + "annotation/ref/{ref}/{ref}.fna",
+    output:
+        out_dir=directory(workspace + "abricate/ref/{ref}/"),
+    params:
+        minid=config["abricate_minid"],
+        mincov=config["abricate_mincov"],
+    conda:
+        "env_abricate"
+    shell:
+        """
+        mkdir {output.out_dir}
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db ncbi {input.ref_fna} > {output.out_dir}/ncbi.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db argannot {input.ref_fna} > {output.out_dir}/argannot.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db card {input.ref_fna} > {output.out_dir}/card.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db megares {input.ref_fna} > {output.out_dir}/megares.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db plasmidfinder {input.ref_fna} > {output.out_dir}/plasmidfinder.tab
+
+        abricate --minid {params.minid} --mincov {params.mincov} --nopath \
+        --db resfinder {input.ref_fna} > {output.out_dir}/resfinder.tab
         """
