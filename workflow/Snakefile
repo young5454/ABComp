@@ -773,6 +773,7 @@ rule roary_visualization:
         mv {params.group}_tree.newick {output.plot_dir}
         """
 
+
 ### 11/30 update: Abricate
 # Rule to run Abricate to screen virulence factors
 rule abricate_strain:
