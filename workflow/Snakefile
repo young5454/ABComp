@@ -774,6 +774,7 @@ rule roary_visualization:
         """
 
 ### 11/30 update: Abricate
+# Rule to run Abricate to screen virulence factors
 rule abricate_strain:
     input:
         # Input FNAs are annotated gene nucleotide file
