@@ -8,8 +8,8 @@ configfile: "config/config.yml"
 workspace = config["workspace"]
 
 # Define GROUP, STRAIN and REF wildcards
-GROUP, STRAIN = glob_wildcards(f"{workspace}assembly/{group}_{strain}/genome")
-REF, = glob_wildcards(f"{workspace}assembly/ref/genome/{ref}.fasta")
+GROUP, STRAIN = glob_wildcards(workspace + "assembly/{group}_{strain}/genome")
+REF, = glob_wildcards(workspace + "assembly/ref/genome/{ref}.fasta")
 
 # Rule all
 rule all:
@@ -17,64 +17,69 @@ rule all:
         ### Polypolish I/O files
         # Long-read draft assembly
         expand(
-            f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}.fasta",
+            workspace + "assembly/{group}_{strain}/genome/{group}_{strain}.fasta",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         # Illumina paired-end short reads
         expand(
-            f"{workspace}assembly/{group}_{strain}/reads/{group}_{strain}_1.fastq.gz",
+            workspace + "assembly/{group}_{strain}/reads/{group}_{strain}_1.fastq.gz",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}assembly/{group}_{strain}/reads/{group}_{strain}_2.fastq.gz",
+            workspace + "assembly/{group}_{strain}/reads/{group}_{strain}_2.fastq.gz",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         # Raw alignments
         expand(
-            f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_aligned_1.sam",
+            workspace
+            + "assembly/{group}_{strain}/genome/{group}_{strain}_aligned_1.sam",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_aligned_2.sam",
+            workspace
+            + "assembly/{group}_{strain}/genome/{group}_{strain}_aligned_2.sam",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         # Filtered alignments
         expand(
-            f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_filtered_1.sam",
+            workspace
+            + "assembly/{group}_{strain}/genome/{group}_{strain}_filtered_1.sam",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_filtered_2.sam",
+            workspace
+            + "assembly/{group}_{strain}/genome/{group}_{strain}_filtered_2.sam",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         # Polished assembly
         expand(
-            f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
+            workspace
+            + "assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
 
         # Added assembly
-        # expand(f"{workspace}added_assembly/{group}_{strain}/genome/{group}_{strain}.fasta", zip, group=ADDGROUP, strain=ADDSTRAIN),
+        # expand(workspace + "added_assembly/{group}_{strain}/genome/{group}_{strain}.fasta", zip, group=ADDGROUP, strain=ADDSTRAIN),
         
         ### Busco directory
         expand(
-            f"{workspace}busco/{group}_{strain}_busco/",
+            workspace + "busco/{group}_{strain}_busco/",
             zip,
             group=GROUP,
             strain=STRAIN,
@@ -82,7 +87,7 @@ rule all:
 
         ### Quast directory
         expand(
-            f"{workspace}quast/{group}_{strain}_quast/",
+            workspace + "quast/{group}_{strain}_quast/",
             zip,
             group=GROUP,
             strain=STRAIN,
@@ -90,90 +95,90 @@ rule all:
 
         ### Prokka I/O files
         # Reference genome & genbank
-        expand(f"{workspace}assembly/ref/genome/{ref}.fasta", ref=REF),
+        expand(workspace + "assembly/ref/genome/{ref}.fasta", ref=REF),
         # Prokka outputs - REFERENCE 
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.err", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.ffn", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.fsa", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.gff", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.sqn", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.tsv", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.faa", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.fna", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.gbk", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.log", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.tbl", ref=REF),
-        expand(f"{workspace}annotation/ref/{ref}/{ref}.txt", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.err", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.ffn", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.fsa", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.gff", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.sqn", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.tsv", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.faa", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.fna", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.gbk", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.log", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.tbl", ref=REF),
+        expand(workspace + "annotation/ref/{ref}/{ref}.txt", ref=REF),
 
         # Prokka outputs - STRAINS 
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.err",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.err",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.ffn",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.ffn",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.fsa",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.fsa",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.gff",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.gff",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.sqn",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.sqn",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.tsv",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.tsv",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.faa",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.faa",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.fna",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.fna",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.gbk",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.gbk",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.log",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.log",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.tbl",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.tbl",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}annotation/{group}_{strain}/{group}_{strain}.txt",
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.txt",
             zip,
             group=GROUP,
             strain=STRAIN,
@@ -182,160 +187,181 @@ rule all:
         ### Roary I/O files
         # Roary outputs - STRAIN-to-REF pairwise
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/accessory.header.embl",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/accessory.header.embl",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/accessory.tab",
+            workspace + "pangenome/{group}_{strain}_ref_pairwise/accessory.tab",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/accessory_binary_genes.fa",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/accessory_binary_genes.fa",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/accessory_graph.dot",
+            workspace + "pangenome/{group}_{strain}_ref_pairwise/accessory_graph.dot",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/blast_identity_frequency.Rtab",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/blast_identity_frequency.Rtab",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/clustered_proteins",
+            workspace + "pangenome/{group}_{strain}_ref_pairwise/clustered_proteins",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_accessory.header.embl",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/core_accessory.header.embl",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_accessory.tab",
+            workspace + "pangenome/{group}_{strain}_ref_pairwise/core_accessory.tab",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_accessory_graph.dot",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/core_accessory_graph.dot",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_alignment_header.embl",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/core_alignment_header.embl",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_gene_alignment.aln",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/core_gene_alignment.aln",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/gene_presence_absence.Rtab",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/gene_presence_absence.Rtab",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/gene_presence_absence.csv",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/gene_presence_absence.csv",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/number_of_conserved_genes.Rtab",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/number_of_conserved_genes.Rtab",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/number_of_genes_in_pan_genome.Rtab",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/number_of_genes_in_pan_genome.Rtab",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/number_of_new_genes.Rtab",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/number_of_new_genes.Rtab",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/number_of_unique_genes.Rtab",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/number_of_unique_genes.Rtab",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/pan_genome_reference.fa",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/pan_genome_reference.fa",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         expand(
-            f"{workspace}pangenome/{group}_{strain}_ref_pairwise/summary_statistics.txt",
+            workspace
+            + "pangenome/{group}_{strain}_ref_pairwise/summary_statistics.txt",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
         # Roary output - Within-Group
-        expand(f"{workspace}pangenome2/{group}", group=GROUP),
+        expand(workspace + "pangenome2/{group}", group=GROUP),
 
         # Roary directory - Roary tmp for holding strain GFFs
-        expand(f"{workspace}roary_tmp/{group}/", group=GROUP),
+        expand(workspace + "roary_tmp/{group}/", group=GROUP),
 
         ### All Group directory
-        expand(f"{workspace}all_groups/{group}/gene_lists/", group=GROUP),
-        expand(f"{workspace}all_groups/{group}/faas/", group=GROUP),
-        expand(f"{workspace}all_groups/{group}/FASTA/", group=GROUP),
+        expand(workspace + "all_groups/{group}/gene_lists/", group=GROUP),
+        expand(workspace + "all_groups/{group}/faas/", group=GROUP),
+        expand(workspace + "all_groups/{group}/FASTA/", group=GROUP),
 
         # Roary plots directory
-        expand(f"{workspace}all_groups/{group}/roary_plots/", group=GROUP),
+        expand(workspace + "all_groups/{group}/roary_plots/", group=GROUP),
 
         ### EggNog-Mapper COG analysis output
-        expand(f"{workspace}all_groups/{group}/emapper-core/", group=GROUP),
-        expand(f"{workspace}all_groups/{group}/emapper-shells/", group=GROUP),
-        expand(f"{workspace}all_groups/{group}/cog_plots/", group=GROUP),
+        expand(workspace + "all_groups/{group}/emapper-core/", group=GROUP),
+        expand(workspace + "all_groups/{group}/emapper-shells/", group=GROUP),
+        expand(workspace + "all_groups/{group}/cog_plots/", group=GROUP),
 
         ### Abricate directory - STRAIN
-        expand(f"{workspace}abricate/{group}_{strain}/", zip, group=GROUP, strain=STRAIN),
+        expand(workspace + "abricate/{group}_{strain}/", zip, group=GROUP, strain=STRAIN),
 
         ### Abricate directory - REF
-        expand(f"{workspace}abricate/ref/{ref}", ref=REF)
+        expand(workspace + "abricate/ref/{ref}", ref=REF)
 
 
 # Rule to run Polypolish for polishing long-read assemblies with Illumina paired-end short reads
 rule polypolish:
     input:
-        genome_fasta=f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}.fasta",
-        reads1=f"{workspace}assembly/{group}_{strain}/reads/{group}_{strain}_1.fastq.gz",
-        reads2=f"{workspace}assembly/{group}_{strain}/reads/{group}_{strain}_2.fastq.gz",
+        genome_fasta=workspace
+        + "assembly/{group}_{strain}/genome/{group}_{strain}.fasta",
+        reads1=workspace + "assembly/{group}_{strain}/reads/{group}_{strain}_1.fastq.gz",
+        reads2=workspace + "assembly/{group}_{strain}/reads/{group}_{strain}_2.fastq.gz",
     output:
-        aligned1=f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_aligned_1.sam",
-        aligned2=f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_aligned_2.sam",
-        filtered1=f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_filtered_1.sam",
-        filtered2=f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_filtered_2.sam",
-        polished_fasta=f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
+        aligned1=workspace
+        + "assembly/{group}_{strain}/genome/{group}_{strain}_aligned_1.sam",
+        aligned2=workspace
+        + "assembly/{group}_{strain}/genome/{group}_{strain}_aligned_2.sam",
+        filtered1=workspace
+        + "assembly/{group}_{strain}/genome/{group}_{strain}_filtered_1.sam",
+        filtered2=workspace
+        + "assembly/{group}_{strain}/genome/{group}_{strain}_filtered_2.sam",
+        polished_fasta=workspace
+        + "assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
     params:
         threads=config["polypolish_threads"],  # Number of threads to use for multi-threaded processes
-        path=f"{workspace}assembly/{group}_{strain}/genome/",
+        path=workspace + "assembly/{group}_{strain}/genome/",
     conda:
         "env_polypolish"
     shell:
@@ -353,14 +379,15 @@ rule polypolish:
 rule busco:
     input:
         # Input FASTAs are polished FASTAs from Polypolish
-        strain_fasta=f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
+        strain_fasta=workspace
+        + "assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
     output:
-        out_dir=directory(f"{workspace}busco/{group}_{strain}_busco/"),
+        out_dir=directory(workspace + "busco/{group}_{strain}_busco/"),
     params:
-        lineage_path=f"{workspace}busco_downloads/lineages/" + config["busco_lineage"],
+        lineage_path=workspace + "busco_downloads/lineages/" + config["busco_lineage"],
         output="{group}_{strain}_busco",
-        out_path=f"{workspace}busco/",
-        sum_dir=f"{workspace}busco/summaries/",
+        out_path=workspace + "busco/",
+        sum_dir=workspace + "busco/summaries/",
     conda:
         "env_busco"
     shell:
@@ -380,9 +407,10 @@ rule busco:
 rule quast:
     input:
         # Input FASTAs are polished FASTAs from Polypolish
-        strain_fasta=f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
+        strain_fasta=workspace
+        + "assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
     output:
-        out_dir=directory(f"{workspace}quast/{group}_{strain}_quast/"),
+        out_dir=directory(workspace + "quast/{group}_{strain}_quast/"),
     params:
         threads=config["quast_threads"],
     conda:
@@ -396,24 +424,24 @@ rule quast:
 # Rule to run Prokka for annotating REFERENCE FASTAs
 rule prokka_ref:
     input:
-        ref_fasta=f"{workspace}assembly/ref/genome/{ref}.fasta",
-        ref_genbank=f"{workspace}assembly/ref/{ref}.gb",
+        ref_fasta=workspace + "assembly/ref/genome/{ref}.fasta",
+        ref_genbank=workspace + "assembly/ref/{ref}.gb",
     output:
-        ref_err=f"{workspace}annotation/ref/{ref}/{ref}.err",
-        ref_ffn=f"{workspace}annotation/ref/{ref}/{ref}.ffn",
-        ref_fsa=f"{workspace}annotation/ref/{ref}/{ref}.fsa",
-        ref_gff=f"{workspace}annotation/ref/{ref}/{ref}.gff",
-        ref_sqn=f"{workspace}annotation/ref/{ref}/{ref}.sqn",
-        ref_tsv=f"{workspace}annotation/ref/{ref}/{ref}.tsv",
-        ref_faa=f"{workspace}annotation/ref/{ref}/{ref}.faa",
-        ref_fna=f"{workspace}annotation/ref/{ref}/{ref}.fna",
-        ref_gbk=f"{workspace}annotation/ref/{ref}/{ref}.gbk",
-        ref_log=f"{workspace}annotation/ref/{ref}/{ref}.log",
-        ref_tbl=f"{workspace}annotation/ref/{ref}/{ref}.tbl",
-        ref_txt=f"{workspace}annotation/ref/{ref}/{ref}.txt",
+        ref_err=workspace + "annotation/ref/{ref}/{ref}.err",
+        ref_ffn=workspace + "annotation/ref/{ref}/{ref}.ffn",
+        ref_fsa=workspace + "annotation/ref/{ref}/{ref}.fsa",
+        ref_gff=workspace + "annotation/ref/{ref}/{ref}.gff",
+        ref_sqn=workspace + "annotation/ref/{ref}/{ref}.sqn",
+        ref_tsv=workspace + "annotation/ref/{ref}/{ref}.tsv",
+        ref_faa=workspace + "annotation/ref/{ref}/{ref}.faa",
+        ref_fna=workspace + "annotation/ref/{ref}/{ref}.fna",
+        ref_gbk=workspace + "annotation/ref/{ref}/{ref}.gbk",
+        ref_log=workspace + "annotation/ref/{ref}/{ref}.log",
+        ref_tbl=workspace + "annotation/ref/{ref}/{ref}.tbl",
+        ref_txt=workspace + "annotation/ref/{ref}/{ref}.txt",
     params:
         threads=config["prokka_ref_threads"],
-        out_dir=f"{workspace}annotation/ref/{ref}",
+        out_dir=workspace + "annotation/ref/{ref}",
         prefix="{ref}",
         locustag="{ref}",
         kingdom=config["prokka_ref_kingdom"],
@@ -431,24 +459,24 @@ rule prokka_ref:
 rule prokka_strain:
     input:
         # Input FASTAs are polished FASTAs from Polypolish
-        strain_fasta=f"{workspace}assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
-        strain_ref_genbank=expand(f"{workspace}assembly/ref/{ref}.gb", ref=REF),
+        strain_fasta=workspace + "assembly/{group}_{strain}/genome/{group}_{strain}_polished.fasta",
+        strain_ref_genbank=expand(workspace + "assembly/ref/{ref}.gb", ref=REF),
     output:
-        strain_err=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.err",
-        strain_ffn=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.ffn",
-        strain_fsa=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.fsa",
-        strain_gff=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.gff",
-        strain_sqn=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.sqn",
-        strain_tsv=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.tsv",
-        strain_faa=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.faa",
-        strain_fna=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.fna",
-        strain_gbk=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.gbk",
-        strain_log=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.log",
-        strain_tbl=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.tbl",
-        strain_txt=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.txt",
+        strain_err=workspace + "annotation/{group}_{strain}/{group}_{strain}.err",
+        strain_ffn=workspace + "annotation/{group}_{strain}/{group}_{strain}.ffn",
+        strain_fsa=workspace + "annotation/{group}_{strain}/{group}_{strain}.fsa",
+        strain_gff=workspace + "annotation/{group}_{strain}/{group}_{strain}.gff",
+        strain_sqn=workspace + "annotation/{group}_{strain}/{group}_{strain}.sqn",
+        strain_tsv=workspace + "annotation/{group}_{strain}/{group}_{strain}.tsv",
+        strain_faa=workspace + "annotation/{group}_{strain}/{group}_{strain}.faa",
+        strain_fna=workspace + "annotation/{group}_{strain}/{group}_{strain}.fna",
+        strain_gbk=workspace + "annotation/{group}_{strain}/{group}_{strain}.gbk",
+        strain_log=workspace + "annotation/{group}_{strain}/{group}_{strain}.log",
+        strain_tbl=workspace + "annotation/{group}_{strain}/{group}_{strain}.tbl",
+        strain_txt=workspace + "annotation/{group}_{strain}/{group}_{strain}.txt",
     params:
         threads=config["prokka_strain_threads"],
-        out_dir=f"{workspace}annotation/{group}_{strain}/",
+        out_dir=workspace + "annotation/{group}_{strain}/",
         prefix="{group}_{strain}",
         locustag="{group}_{strain}",
         kingdom=config["prokka_strain_kingdom"],
@@ -466,31 +494,50 @@ rule prokka_strain:
 rule roary_strain_ref_pairwise:
     input:
         # Input GFFs are annotated GFFs from Prokka
-        ref_gff=expand(f"{workspace}annotation/ref/{ref}/{ref}.gff", ref=REF),
-        strain_gff=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.gff",
+        ref_gff=expand(workspace + "annotation/ref/{ref}/{ref}.gff", ref=REF),
+        strain_gff=workspace + "annotation/{group}_{strain}/{group}_{strain}.gff",
     output:
-        accessory_header=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/accessory.header.embl",
-        accessory_tab=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/accessory.tab",
-        accessory_binary_genes=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/accessory_binary_genes.fa",
-        accessory_graph=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/accessory_graph.dot",
-        blast_identity_frequency=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/blast_identity_frequency.Rtab",
-        clustered_proteins=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/clustered_proteins",
-        core_accessory_header=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_accessory.header.embl",
-        core_accessory=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_accessory.tab",
-        core_accessory_graph=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_accessory_graph.dot",
-        core_alignment_header=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_alignment_header.embl",
-        core_gene_alignment=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/core_gene_alignment.aln",
-        gene_presence_absence_rtab=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/gene_presence_absence.Rtab",
-        gene_presence_absence_csv=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/gene_presence_absence.csv",
-        number_of_conserved_genes=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/number_of_conserved_genes.Rtab",
-        number_of_genes_in_pan_genome=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/number_of_genes_in_pan_genome.Rtab",
-        number_of_new_genes=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/number_of_new_genes.Rtab",
-        number_of_unique_genes=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/number_of_unique_genes.Rtab",
-        pan_genome_reference=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/pan_genome_reference.fa",
-        summary_statistics=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/summary_statistics.txt",
+        accessory_header=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/accessory.header.embl",
+        accessory_tab=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/accessory.tab",
+        accessory_binary_genes=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/accessory_binary_genes.fa",
+        accessory_graph=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/accessory_graph.dot",
+        blast_identity_frequency=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/blast_identity_frequency.Rtab",
+        clustered_proteins=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/clustered_proteins",
+        core_accessory_header=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/core_accessory.header.embl",
+        core_accessory=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/core_accessory.tab",
+        core_accessory_graph=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/core_accessory_graph.dot",
+        core_alignment_header=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/core_alignment_header.embl",
+        core_gene_alignment=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/core_gene_alignment.aln",
+        gene_presence_absence_rtab=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/gene_presence_absence.Rtab",
+        gene_presence_absence_csv=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/gene_presence_absence.csv",
+        number_of_conserved_genes=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/number_of_conserved_genes.Rtab",
+        number_of_genes_in_pan_genome=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/number_of_genes_in_pan_genome.Rtab",
+        number_of_new_genes=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/number_of_new_genes.Rtab",
+        number_of_unique_genes=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/number_of_unique_genes.Rtab",
+        pan_genome_reference=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/pan_genome_reference.fa",
+        summary_statistics=workspace
+        + "pangenome/{group}_{strain}_ref_pairwise/summary_statistics.txt",
     params:
         threads=config["roary_pairwise_threads"],
-        out_dir=f"{workspace}pangenome/{group}_{strain}_ref_pairwise/",
+        out_dir=workspace + "pangenome/{group}_{strain}_ref_pairwise/",
         pident=config["roary_pairwise_pident"],
     conda:
         "env_roary"
@@ -504,18 +551,19 @@ rule roary_strain_ref_pairwise:
 # Rule to make roary_tmp group folder
 rule move_gff_files:
     input:
-        strain_gff=expand(f"{workspace}annotation/{group}_{strain}/{group}_{strain}.gff",
+        strain_gff=expand(
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.gff",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
     output:
-        tmp_dir=directory(f"{workspace}roary_tmp/{group}/"),
+        tmp_dir=directory(workspace + "roary_tmp/{group}/"),
     params:
         workspace=config["workspace"],
         script=config["move_gff_script"],
         group_info=config["group_info"],
-        tmp_dir=directory(f"{workspace}roary_tmp/"),
+        tmp_dir=directory(workspace + "roary_tmp/"),
     conda:
         "env_roary"
     shell:
@@ -530,9 +578,9 @@ rule move_gff_files:
 # Rule to run Roary for STRAINS within GROUPS
 rule roary_within_group:
     input:
-        tmp_dir=f"{workspace}roary_tmp/{group}/",
+        tmp_dir=workspace + "roary_tmp/{group}/",
     output:
-        out_dir=directory(f"{workspace}pangenome2/{group}/"),
+        out_dir=directory(workspace + "pangenome2/{group}/"),
     params:
         threads=config["roary_within_group_threads"],
         pident=config["roary_within_group_pident"],
@@ -554,9 +602,9 @@ rule gene_list_maker:
     input:
         dummy=rules.roary_within_group.output.out_dir,
     output:
-        out_dir=directory(f"{workspace}all_groups/{group}/gene_lists/"),
+        out_dir=directory(workspace + "all_groups/{group}/gene_lists/"),
     params:
-        tmp_dir=directory(f"{workspace}roary_tmp/{group}/"),
+        tmp_dir=directory(workspace + "roary_tmp/{group}/"),
     conda:
         "env_emapper"
     shell:
@@ -570,18 +618,19 @@ rule gene_list_maker:
 # Rule to copy faa files from Prokka output to GROUP directory
 rule move_faa_files:
     input:
-        strain_faa=expand(f"{workspace}annotation/{group}_{strain}/{group}_{strain}.faa",
+        strain_faa=expand(
+            workspace + "annotation/{group}_{strain}/{group}_{strain}.faa",
             zip,
             group=GROUP,
             strain=STRAIN,
         ),
     output:
-        faa_dir=directory(f"{workspace}all_groups/{group}/faas/"),
+        faa_dir=directory(workspace + "all_groups/{group}/faas/"),
     params:
         workspace=config["workspace"],
         script=config["move_faa_script"],
         group_info=config["group_info"],
-        group_dir=f"{workspace}all_groups/",
+        group_dir=workspace + "all_groups/",
     conda:
         "env_emapper"
     shell:
@@ -599,10 +648,10 @@ rule fasta_curation:
         faa_dir=rules.move_faa_files.output.faa_dir,
         text_path=rules.gene_list_maker.output.out_dir,
     output:
-        fasta_dir=directory(f"{workspace}all_groups/{group}/FASTA/"),
+        fasta_dir=directory(workspace + "all_groups/{group}/FASTA/"),
     params:
-        tmp_dir=directory(f"{workspace}roary_tmp/{group}/"),
-        statistics=directory(f"{workspace}all_groups/{group}/statistics.txt"),
+        tmp_dir=directory(workspace + "roary_tmp/{group}/"),
+        statistics=directory(workspace + "all_groups/{group}/statistics.txt"),
     conda:
         "env_emapper"
     shell:
@@ -620,7 +669,7 @@ rule cog_analysis_core:
         # Inputs are curated FASTAs from rule fasta_curation
         fasta_dir=rules.fasta_curation.output.fasta_dir,
     output:
-        emapper_dir=directory(f"{workspace}all_groups/{group}/emapper-core/"),
+        emapper_dir=directory(workspace + "all_groups/{group}/emapper-core/"),
     params:
         # Parameters for Egg-NOG-mapper
         pident=config["emapper_core_pident"],
@@ -648,7 +697,7 @@ rule cog_analysis_shells:
         # Inputs are curated FASTAs from rule fasta_curation
         fasta_dir=rules.fasta_curation.output.fasta_dir,
     output:
-        emapper_dir=directory(f"{workspace}all_groups/{group}/emapper-shells/"),
+        emapper_dir=directory(workspace + "all_groups/{group}/emapper-shells/"),
     params:
         # Parameters for Egg-NOG-mapper
         pident=config["emapper_shells_pident"],
@@ -677,15 +726,15 @@ rule cog_visualization:
         core_emapper_dir=rules.cog_analysis_core.output.emapper_dir,
         shells_emapper_dir=rules.cog_analysis_shells.output.emapper_dir,
     output:
-        plot_dir=directory(f"{workspace}all_groups/{group}/cog_plots/"),
+        plot_dir=directory(workspace + "all_groups/{group}/cog_plots/"),
     params:
-        core_hypo_path=f"{workspace}all_groups/{group}/FASTA/core_hypo.fasta",
-        shells_hypo_path=f"{workspace}all_groups/{group}/FASTA/shells_hypo.fasta",
+        core_hypo_path=workspace + "all_groups/{group}/FASTA/core_hypo.fasta",
+        shells_hypo_path=workspace + "all_groups/{group}/FASTA/shells_hypo.fasta",
         group_name="{group}",
         types_core=config["types_core"],
         types_shells=config["types_shells"],
-        core_statistics=f"{workspace}all_groups/{group}/emapper-core/statistics.txt",
-        shells_statistics=f"{workspace}all_groups/{group}/emapper-shells/statistics.txt",
+        core_statistics=workspace + "all_groups/{group}/emapper-core/statistics.txt",
+        shells_statistics=workspace + "all_groups/{group}/emapper-shells/statistics.txt",
     conda:
         "env_emapper"
     shell:
@@ -708,9 +757,9 @@ rule roary_visualization:
     input:
         dummy=rules.roary_within_group.output.out_dir,
     output:
-        plot_dir=directory(f"{workspace}all_groups/{group}/roary_plots/"),
+        plot_dir=directory(workspace + "all_groups/{group}/roary_plots/"),
     params:
-        tmp_dir=directory(f"{workspace}roary_tmp/{group}/"),
+        tmp_dir=directory(workspace + "roary_tmp/{group}/"),
         group="{group}",
     conda:
         "env_emapper"
@@ -730,9 +779,9 @@ rule roary_visualization:
 rule abricate_strain:
     input:
         # Input FNAs are annotated gene nucleotide file
-        strain_fna=f"{workspace}annotation/{group}_{strain}/{group}_{strain}.fna",
+        strain_fna=workspace + "annotation/{group}_{strain}/{group}_{strain}.fna",
     output:
-        out_dir=directory(f"{workspace}abricate/{group}_{strain}/"),
+        out_dir=directory(workspace + "abricate/{group}_{strain}/"),
     params:
         minid=config["abricate_minid"],
         mincov=config["abricate_mincov"],
@@ -765,9 +814,9 @@ rule abricate_strain:
 rule abricate_ref:
     input:
         # Input FNAs are annotated gene nucleotide file
-        ref_fna=f"{workspace}annotation/ref/{ref}/{ref}.fna",
+        ref_fna=workspace + "annotation/ref/{ref}/{ref}.fna",
     output:
-        out_dir=directory(f"{workspace}abricate/ref/{ref}/"),
+        out_dir=directory(workspace + "abricate/ref/{ref}/"),
     params:
         minid=config["abricate_minid"],
         mincov=config["abricate_mincov"],
