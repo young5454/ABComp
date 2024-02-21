@@ -4,6 +4,11 @@
 # Workspace directory
 workspace: "/ABComparative/ABComparative/results/"
 
+# Flye
+flye_read_type: "--pacbio-hifi"
+flye_genome_size: "4m"
+flye_threads: 16
+
 # Polypolish
 polypolish_threads: 8
 
