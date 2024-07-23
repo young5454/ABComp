@@ -5,6 +5,8 @@ import argparse
 import csv
 import numpy as np
 
+# 061324: Plus options for setting percentage threshold for COG labeling, and removing grouped COG labels
+
 def main():    
     # Argument parser
     parser = argparse.ArgumentParser(description='COG Analysis Script')
@@ -13,7 +15,9 @@ def main():
     parser.add_argument('--group_name', required=True, help='Name of the strain group to run COG analysis')
     parser.add_argument('--types', required=True, help='Specify core or shell gene types')
     parser.add_argument('--save_path', required=False, help='Path to save pie chart')
-    parser.add_argument('--num_labels', required=False, default=False, help='Show weighted counts for COG categories')    
+    parser.add_argument('--num_labels', required=False, default=False, help='Show weighted counts for COG categories')
+    parser.add_argument('--annot_group_labels', required=False, default=False, help='Show annotation for grouped COG labels')
+    parser.add_argument('--label_threshold', required=False, default=1, help='Minimum percentage of COG label to be annotated')
     args = parser.parse_args()
 
     # Define argument variables
@@ -23,6 +27,8 @@ def main():
     types = args.types
     save_path = args.save_path
     num_labels = args.num_labels
+    annot_group_labels = args.annot_group_labels
+    label_threshold = float(args.label_threshold)
 
     # Count number of hypothetical proteins
     with open(hypo_path, 'r') as hypo:
@@ -214,15 +220,26 @@ def main():
                   'X',                                          # Mobileome
                   'R', 'S', '-']                                # Poorly characterized
 
-    # Only label those that have nonzero values
+    # Only label those that have nonzero values + Above label_threshold (%)
+    # Calculate each COG percentage
+    cog_percentage = {}
+    for label in list(cog_dictionary_weighted.keys()):
+        percent = 100 * (cog_dictionary_weighted[label] / nums)
+        cog_percentage[label] = percent
+
     cogs_label_nonzero = []
     cogs_label_nonzero_num = []
     for label in cogs_label:
         if label in cog_dictionary_weighted.keys():
-            cogs_label_nonzero.append(label)
-            count = cog_dictionary_weighted[label]
-            label = label + ' ' + '(' + "{:.3f}".format(count) + ')'
-            cogs_label_nonzero_num.append(label)
+            ## Threshold option
+            if cog_percentage[label] > label_threshold:
+                cogs_label_nonzero.append(label)
+                count = cog_dictionary_weighted[label]
+                label = label + ' ' + '(' + "{:.3f}".format(count) + ')'
+                cogs_label_nonzero_num.append(label)
+            else:
+                cogs_label_nonzero.append('')
+                cogs_label_nonzero_num.append('')
         else:
             cogs_label_nonzero.append('')
             cogs_label_nonzero_num.append('')
@@ -310,15 +327,23 @@ def main():
             wedgeprops=dict(width=size, edgecolor='w'))
 
     # Plot grouped COGs
-    ax.pie(groupsum, 
-        radius=1.4-size,
-        startangle=140,
-        colors=inner_colors,
-        labels=groups_label,
-        labeldistance=0.2,
-        rotatelabels=True,
-        textprops={'color':font_color, 'fontsize': 25},
-        wedgeprops=dict(edgecolor='w'))
+    if annot_group_labels:
+        ax.pie(groupsum, 
+            radius=1.4-size,
+            startangle=140,
+            colors=inner_colors,
+            labels=groups_label,
+            labeldistance=0.2,
+            rotatelabels=True,
+            textprops={'color':font_color, 'fontsize': 25},
+            wedgeprops=dict(edgecolor='w'))
+    else:
+        ax.pie(groupsum, 
+            radius=1.4-size,
+            startangle=140,
+            colors=inner_colors,
+            textprops={'color':font_color, 'fontsize': 25},
+            wedgeprops=dict(edgecolor='w'))
     
     ax.axis('equal')
 
