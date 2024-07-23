@@ -7,5 +7,5 @@ logs/**
 __pycache__
 busco_*.log
 rm_fasta.sh
-.github/workflows/
+/.github/workflows/
 eggnog_data/**
