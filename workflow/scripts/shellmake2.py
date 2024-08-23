@@ -32,7 +32,7 @@ print("Now making shell scripts for moving FAA files into group folders...")
 
 f = open(script, "w")
 new_command = ""
-main_path = workspace + "annotation/"
+main_path = workspace + "2.Annotation/"
 
 for group in groups_info.keys():
     group_folder = save_path + group + '/' + dir_name

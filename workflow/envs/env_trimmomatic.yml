@@ -1,8 +1,7 @@
-name: env_polypolish
+name: env_trimmomatic
 channels:
   - conda-forge
   - bioconda
   - defaults
 dependencies:
-  - bwa=0.7.17
-  - polypolish=0.5.0
+  - trimmomatic=0.39

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="53.81 114.35 190.81 236.61">
+<g id="graph0" class="graph" transform="translate(57.45227675018571,347.3199402251863) scale(0.9100388240808976)">
+<title>snakemake_dag</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-256 205.67,-256 205.67,4 -4,4"/>
+<!-- 0 -->
+<g id="node1" class="node">
+<title>0</title>
+<path fill="none" stroke="rgb(128, 128, 128)" stroke-width="3" d="M89.67,-36C89.67,-36 59.67,-36 59.67,-36 53.67,-36 47.67,-30 47.67,-24 47.67,-24 47.67,-12 47.67,-12 47.67,-6 53.67,0 59.67,0 59.67,0 89.67,0 89.67,0 95.67,0 101.67,-6 101.67,-12 101.67,-12 101.67,-24 101.67,-24 101.67,-30 95.67,-36 89.67,-36"/>
+<text text-anchor="middle" x="74.67" y="-14.4" font-family="Helvetica,sans-Serif" font-size="12">all</text>
+</g>
+<!-- 1 -->
+<g id="node2" class="node">
+<title>1</title>
+<path fill="none" stroke="rgb(255, 197, 131)" stroke-width="3" d="M69.33,-252C69.33,-252 12,-252 12,-252 6,-252 0,-246 0,-240 0,-240 0,-228 0,-228 0,-222 6,-216 12,-216 12,-216 69.33,-216 69.33,-216 75.33,-216 81.33,-222 81.33,-228 81.33,-228 81.33,-240 81.33,-240 81.33,-246 75.33,-252 69.33,-252"/>
+<text text-anchor="middle" x="40.67" y="-230.4" font-family="Helvetica,sans-Serif" font-size="12">trimmomatic</text>
+</g>
+<!-- 1&#45;&gt;0 -->
+<g id="edge4" class="edge">
+<title>1-&gt;0</title>
+<path fill="none" stroke="grey" d="M40.23,-214.5C40.05,-196.44 40.43,-168.21 43.67,-144 48.02,-111.41 52.69,-103.9 60.67,-72 62.55,-64.46 64.66,-56.33 66.66,-48.76" stroke-width="1.5"/>
+<polygon fill="grey" stroke="grey" stroke-width="1.5" points="69.98,-49.88 69.17,-39.32 63.22,-48.08 69.98,-49.88"/>
+</g>
+<!-- 2 -->
+<g id="node3" class="node">
+<title>2</title>
+<path fill="none" stroke="rgb(219, 131, 198)" stroke-width="3" d="M110.35,-180C110.35,-180 64.98,-180 64.98,-180 58.98,-180 52.98,-174 52.98,-168 52.98,-168 52.98,-156 52.98,-156 52.98,-150 58.98,-144 64.98,-144 64.98,-144 110.35,-144 110.35,-144 116.35,-144 122.35,-150 122.35,-156 122.35,-156 122.35,-168 122.35,-168 122.35,-174 116.35,-180 110.35,-180"/>
+<text text-anchor="middle" x="87.67" y="-158.4" font-family="Helvetica,sans-Serif" font-size="12">polypolish</text>
+</g>
+<!-- 1&#45;&gt;2 -->
+<g id="edge5" class="edge">
+<title>1-&gt;2</title>
+<path fill="none" stroke="grey" d="M53.01,-214.61C57.86,-207.4 63.52,-198.96 68.85,-191.03" stroke-width="1.5"/>
+<polygon fill="grey" stroke="grey" stroke-width="1.5" points="71.63,-193.16 74.3,-182.91 65.82,-189.26 71.63,-193.16"/>
+</g>
+<!-- 2&#45;&gt;0 -->
+<g id="edge2" class="edge">
+<title>2-&gt;0</title>
+<path fill="none" stroke="grey" d="M78.51,-142.87C73.97,-132.87 68.97,-120.06 66.67,-108 62.96,-88.6 64.92,-66.48 67.83,-49.15" stroke-width="1.5"/>
+<polygon fill="grey" stroke="grey" stroke-width="1.5" points="71.24,-49.92 69.67,-39.44 64.37,-48.61 71.24,-49.92"/>
+</g>
+<!-- 3 -->
+<g id="node4" class="node">
+<title>3</title>
+<path fill="none" stroke="rgb(255, 131, 131)" stroke-width="3" d="M117.67,-108C117.67,-108 87.67,-108 87.67,-108 81.67,-108 75.67,-102 75.67,-96 75.67,-96 75.67,-84 75.67,-84 75.67,-78 81.67,-72 87.67,-72 87.67,-72 117.67,-72 117.67,-72 123.67,-72 129.67,-78 129.67,-84 129.67,-84 129.67,-96 129.67,-96 129.67,-102 123.67,-108 117.67,-108"/>
+<text text-anchor="middle" x="102.67" y="-86.4" font-family="Helvetica,sans-Serif" font-size="12">busco</text>
+</g>
+<!-- 2&#45;&gt;3 -->
+<g id="edge6" class="edge">
+<title>2-&gt;3</title>
+<path fill="none" stroke="grey" d="M91.61,-142.61C93.03,-135.97 94.68,-128.28 96.26,-120.91" stroke-width="1.5"/>
+<polygon fill="grey" stroke="grey" stroke-width="1.5" points="99.65,-121.76 98.33,-111.25 92.81,-120.29 99.65,-121.76"/>
+</g>
+<!-- 4 -->
+<g id="node5" class="node">
+<title>4</title>
+<path fill="none" stroke="rgb(255, 131, 131)" stroke-width="3" d="M189.67,-108C189.67,-108 159.67,-108 159.67,-108 153.67,-108 147.67,-102 147.67,-96 147.67,-96 147.67,-84 147.67,-84 147.67,-78 153.67,-72 159.67,-72 159.67,-72 189.67,-72 189.67,-72 195.67,-72 201.67,-78 201.67,-84 201.67,-84 201.67,-96 201.67,-96 201.67,-102 195.67,-108 189.67,-108"/>
+<text text-anchor="middle" x="174.67" y="-86.4" font-family="Helvetica,sans-Serif" font-size="12">quast</text>
+</g>
+<!-- 2&#45;&gt;4 -->
+<g id="edge7" class="edge">
+<title>2-&gt;4</title>
+<path fill="none" stroke="grey" d="M110.52,-142.61C120.31,-134.73 131.92,-125.39 142.55,-116.84" stroke-width="1.5"/>
+<polygon fill="grey" stroke="grey" stroke-width="1.5" points="144.59,-119.69 150.19,-110.69 140.21,-114.23 144.59,-119.69"/>
+</g>
+<!-- 3&#45;&gt;0 -->
+<g id="edge3" class="edge">
+<title>3-&gt;0</title>
+<path fill="none" stroke="grey" d="M95.31,-70.61C92.59,-63.8 89.43,-55.91 86.41,-48.37" stroke-width="1.5"/>
+<polygon fill="grey" stroke="grey" stroke-width="1.5" points="89.68,-47.12 82.72,-39.13 83.18,-49.72 89.68,-47.12"/>
+</g>
+<!-- 4&#45;&gt;0 -->
+<g id="edge1" class="edge">
+<title>4-&gt;0</title>
+<path fill="none" stroke="grey" d="M148.39,-70.61C136.79,-62.49 122.98,-52.82 110.46,-44.06" stroke-width="1.5"/>
+<polygon fill="grey" stroke="grey" stroke-width="1.5" points="112.82,-41.44 102.62,-38.57 108.81,-47.17 112.82,-41.44"/>
+</g>
+</g>
+</svg>

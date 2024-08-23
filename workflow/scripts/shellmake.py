@@ -1,5 +1,6 @@
 import yaml
 import argparse
+# 072424: Update for directory name change
 
 parser = argparse.ArgumentParser(description="Shell script generator for moving GFF files")
 parser.add_argument('--group_yml', required=True, help="Path to groups-strains information yaml file")
@@ -30,7 +31,7 @@ print("Now making shell scripts for moving gff files into group folders...")
 
 f = open(script, "w")
 new_command = ""
-main_path = workspace + "annotation/"
+main_path = workspace + "2.Annotation/"
 
 # Make working directories
 f.write("mkdir" + " " + save_path + '\n')
