@@ -9,6 +9,9 @@ workspace: "/workspace/ABComparative/results/"
 # flye_genome_size: "4m"
 # flye_threads: 16
 
+# Fastqc
+fastqc_threads: 8
+
 # Trimmomatic
 trimmomatic_threads: 8
 trimmomatic_phred: "-phred33"

@@ -14,8 +14,8 @@ GROUP, STRAIN = glob_wildcards(os.path.join(workspace, "0.Assembly/{group}_{stra
 # Rule all
 rule all:
     input:
-        ### Trimmomatic I/O files
-        # Illumina paired-end short reads
+        ### Fastqc-raw I/O files
+        # Raw Illumina paired-end short reads
         expand(
             os.path.join(workspace, 
             "0.Assembly/{group}_{strain}/reads/{group}_{strain}_1.fastq.gz"),
@@ -30,6 +30,38 @@ rule all:
             group=GROUP,
             strain=STRAIN,
         ),
+        # Fastqc htmls
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/raw/{group}_{strain}_1_fastqc.html"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        ),
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/raw/{group}_{strain}_2_fastqc.html"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        ),
+        # Fastqc zips
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/raw/{group}_{strain}_1_fastqc.zip"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        ),
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/raw/{group}_{strain}_2_fastqc.zip"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        ),   
+        ### Trimmomatic I/O files
+        # Trimmed Illumina paired-end short reads : Paired
         expand(
             os.path.join(workspace, 
             "0.Assembly/{group}_{strain}/trimmed/{group}_{strain}_1_paired.fastq.gz"),
@@ -44,6 +76,7 @@ rule all:
             group=GROUP,
             strain=STRAIN,
         ),
+        # Trimmed Illumina paired-end short reads : Unpaired
         expand(
             os.path.join(workspace, 
             "0.Assembly/{group}_{strain}/trimmed/{group}_{strain}_1_unpaired.fastq.gz"),
@@ -54,6 +87,37 @@ rule all:
         expand(
             os.path.join(workspace, 
             "0.Assembly/{group}_{strain}/trimmed/{group}_{strain}_2_unpaired.fastq.gz"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        ),
+        ### Fastqc-trimmed I/O files
+        # Fastqc htmls
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/trimmed/{group}_{strain}_1_paired_fastqc.html"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        ),
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/trimmed/{group}_{strain}_2_paired_fastqc.html"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        ),
+        # Fastqc zips
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/trimmed/{group}_{strain}_1_paired_fastqc.zip"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        ),
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/trimmed/{group}_{strain}_2_paired_fastqc.zip"),
             zip,
             group=GROUP,
             strain=STRAIN,
@@ -105,10 +169,6 @@ rule all:
             group=GROUP,
             strain=STRAIN,
         ),
-
-        # Added assembly
-        # expand(workspace + "added_assembly/{group}_{strain}/genome/{group}_{strain}.fasta", zip, group=ADDGROUP, strain=ADDSTRAIN),
-        
         ### Busco directory
         expand(
             os.path.join(workspace, "1.Busco/{group}_{strain}_busco/"),
@@ -116,7 +176,6 @@ rule all:
             group=GROUP,
             strain=STRAIN,
         ),
-
         ### Quast directory
         expand(
             os.path.join(workspace, "1.Quast/{group}_{strain}_quast/"),
@@ -126,13 +185,56 @@ rule all:
         ),
 
 
+# Rule to quality check raw Illumina paired-end short reads
+rule fastqc_raw:
+    input:
+        reads1=os.path.join(workspace,
+        "0.Assembly/{group}_{strain}/reads/{group}_{strain}_1.fastq.gz"),
+        reads2=os.path.join(workspace,
+        "0.Assembly/{group}_{strain}/reads/{group}_{strain}_2.fastq.gz")
+    output:
+        html1=os.path.join(workspace,
+        "0.QC/{group}_{strain}/raw/{group}_{strain}_1_fastqc.html"),
+        html2=os.path.join(workspace,
+        "0.QC/{group}_{strain}/raw/{group}_{strain}_2_fastqc.html"),
+        zip1=os.path.join(workspace,
+        "0.QC/{group}_{strain}/raw/{group}_{strain}_1_fastqc.zip"),
+        zip2=os.path.join(workspace,
+        "0.QC/{group}_{strain}/raw/{group}_{strain}_2_fastqc.zip"),
+    message:
+        "Run Fastqc to raw Illumina paired-end short reads"
+    params:
+        threads=config["fastqc_threads"],
+        out_path=os.path.join(workspace, "0.QC/{group}_{strain}/raw/"),
+        multiqc_path=os.path.join(workspace, "0.QC/multiqc_raw/"),
+    conda:
+        "env_qc"
+    shell:
+        """
+        fastqc \
+            -t {params.threads} \
+            -o {params.out_path} \
+            -q \
+            {input.reads1} {input.reads2}
+        
+        mkdir -p {params.multiqc_path}
+        cd {params.out_path}
+        cp * {params.multiqc_path}
+
+        multiqc {params.multiqc_path} \
+            --force \
+            -n fastqc_raw \
+            -o {params.multiqc_path}
+        """
+
+
 # Rule to trim Illumina paired-end short reads
 rule trimmomatic:
     input:
         reads1=os.path.join(workspace,
         "0.Assembly/{group}_{strain}/reads/{group}_{strain}_1.fastq.gz"),
         reads2=os.path.join(workspace,
-        "0.Assembly/{group}_{strain}/reads/{group}_{strain}_2.fastq.gz"),
+        "0.Assembly/{group}_{strain}/reads/{group}_{strain}_2.fastq.gz")
     output:
         paired1=os.path.join(workspace,
         "0.Assembly/{group}_{strain}/trimmed/{group}_{strain}_1_paired.fastq.gz"),
@@ -142,6 +244,8 @@ rule trimmomatic:
         "0.Assembly/{group}_{strain}/trimmed/{group}_{strain}_1_unpaired.fastq.gz"),
         unpaired2=os.path.join(workspace,
         "0.Assembly/{group}_{strain}/trimmed/{group}_{strain}_2_unpaired.fastq.gz"),
+    message:
+        "Run Trimmomatic to trim and remove adapters from raw Illumina paired-end short reads"
     params:
         threads=config["trimmomatic_threads"],
         phred=config["trimmomatic_phred"],
@@ -159,12 +263,54 @@ rule trimmomatic:
     shell:
         """
         trimmomatic PE \
+            -quiet \
             -threads {params.threads} {params.phred} \
             {input.reads1} {input.reads2} \
             {output.paired1} {output.unpaired1} {output.paired2} {output.unpaired2} \
             ILLUMINACLIP:{params.adapter}:{params.seed_mismatch}:{params.palindrome_clip_thres}:{params.simple_clip_thres} \
             LEADING:{params.leading} TRAILING:{params.trailing} \
             SLIDINGWINDOW:{params.sliding1}:{params.sliding2} MINLEN:{params.minlen}
+        """
+
+
+# Rule to quality check trimmed Illumina paired-end short reads
+rule fastqc_trimmed:
+    input:
+        reads1=rules.trimmomatic.output.paired1,
+        reads2=rules.trimmomatic.output.paired2
+    output:
+        html1=os.path.join(workspace,
+        "0.QC/{group}_{strain}/trimmed/{group}_{strain}_1_paired_fastqc.html"),
+        html2=os.path.join(workspace,
+        "0.QC/{group}_{strain}/trimmed/{group}_{strain}_2_paired_fastqc.html"),
+        zip1=os.path.join(workspace,
+        "0.QC/{group}_{strain}/trimmed/{group}_{strain}_1_paired_fastqc.zip"),
+        zip2=os.path.join(workspace,
+        "0.QC/{group}_{strain}/trimmed/{group}_{strain}_2_paired_fastqc.zip"),
+    message:
+        "Run Fastqc to trimmed Illumina paired-end short reads"
+    params:
+        threads=config["fastqc_threads"],
+        out_path=os.path.join(workspace, "0.QC/{group}_{strain}/trimmed/"),
+        multiqc_path=os.path.join(workspace, "0.QC/multiqc_trimmed/"),
+    conda:
+        "env_qc"
+    shell:
+        """
+        fastqc \
+            -t {params.threads} \
+            -o {params.out_path} \
+            -q \
+            {input.reads1} {input.reads2}
+
+        mkdir -p {params.multiqc_path}
+        cd {params.out_path}
+        cp * {params.multiqc_path}
+
+        multiqc {params.multiqc_path} \
+            --force \
+            -n fastqc_trimmed \
+            -o {params.multiqc_path}
         """
 
 
