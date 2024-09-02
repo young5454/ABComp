@@ -8,3 +8,4 @@ __pycache__
 busco_*.log
 rm_fasta.sh
 tmp_envs/**
+busco_downloads
