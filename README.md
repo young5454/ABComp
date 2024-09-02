@@ -25,7 +25,7 @@ The genomes and reads should be saved inside the workspace directory as below :
 
 ⚠️ Make sure all the file extensions strictly follow the names (`.fasta`, `.fastq.gz`) provided above. Also, the fastq read files should be gzipped beforehand. The directory names should **NOT** be altered.
 
-⚠️ Make sure your `{group}` and `{strain}` names do **NOT** contain a ‘_’ inside. The name formats are intended to have the unique ‘_’ so that during the Snakemake run, the group and strain wildcard info are automatically extracted and saved. Also, the file names should perfectly match the names provided in the configuration file (please see section “Configuration file”).
+⚠️ Make sure your `{group}` and `{strain}` names do **NOT** contain a underscore (_) inside. The name formats are intended to have the unique underscore so that during the Snakemake run, the group and strain wildcard info are automatically extracted and saved. Also, the file names should perfectly match the names provided in the configuration file (please see section “Configuration file”).
 
 The assembly polishing block will create a directory `trimmed/` inside each `{group}_{strain}/` folder after running adapter trimming, and save the trimmed reads. Also, the polished assemblies will be saved inside the `genome/` directory with a name format of `{group}_{strain}_polished.fasta`. 
 
@@ -60,9 +60,20 @@ bash create_envs.sh
 ## Pre-downloaded databases
 ABComp requires pre-downloaded databases for running **BUSCO** assembly assessment and **EggNOG-mapper**. Please refer to the website or Github of each software for more information :
 
-**BUSCO** : https://busco.ezlab.org/
+### BUSCO lineage datasets
+[BUSCO](https://busco.ezlab.org/busco_userguide.html#lineage-datasets/)
 
-**EggNOG-mapper** : https://github.com/eggnogdb/eggnog-mapper
+BUSCO lineage datasets contain sets of highly conserved single-copy genes specific to different evolutionary lineages. These datasets are used to evaluate the completeness of genome assemblies by comparing the presence of these key genes in the assembly. Pre-download the appropriate lineage dataset according to the lineage of the input strain. The lineage datasets must be saved inside a directory named busco_downloads, inside your workspace directory.
 
-### BUSCO lineages
-The BUSCO lineages
+### EggNOG annotation databases
+[eggnog-mapper](https://github.com/eggnogdb/eggnog-mapper)
+
+EggNOG-mapper databases consist of precomputed orthologous groups and functional annotations derived from a vast range of organisms. These databases enable the functional annotation of genes in your genome by mapping them to known orthologs and their associated functional data. Pre-downloading the necessary EggNOG-mapper databases ensures that the pipeline can efficiently perform functional annotation. 
+
+Please carefully read through the **Setup** section in the EggNOG-mapper wiki. ABComp assumes you have downloaded all the annotation databases with running the script provided by EggNOG-mapper with default option:
+
+```
+download_eggnog_data.py
+```
+
+That is, a directory named `data/` must be created within your EggNOG-mapper directory, then the above script is run to download all databases provided by EggNOG-mapper.
