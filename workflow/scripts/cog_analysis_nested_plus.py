@@ -1,7 +1,9 @@
+import os
+import argparse
+from Bio import SeqIO
 import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.colors import to_rgba
-import argparse
 import csv
 import numpy as np
 
@@ -9,7 +11,7 @@ import numpy as np
 
 def main():    
     # Argument parser
-    parser = argparse.ArgumentParser(description='COG Analysis Script')
+    parser = argparse.ArgumentParser(description='Visualize COG analysis in nested pie charts')
     parser.add_argument('--tsv_file', required=True, help='Path to annotation TSV file')
     parser.add_argument('--hypo_path', required=True, help='Path to hypothetical proteins FASTA file')
     parser.add_argument('--group_name', required=True, help='Name of the strain group to run COG analysis')
@@ -31,14 +33,14 @@ def main():
     label_threshold = float(args.label_threshold)
 
     # Count number of hypothetical proteins
-    with open(hypo_path, 'r') as hypo:
-        sequences = hypo.read().split('>')[1:]  # Split by '>' and remove the first empty element
-    
-    num_of_hypos = len(sequences)
+    num_of_hypos = 0
+    with open(hypo_path, 'r') as handle:
+        for _ in SeqIO.parse(handle, "fasta"):
+            num_of_hypos += 1
 
     # Clean tsv file format for easy parsing
     # Define input and output file names
-    cleaned_tsv_file = raw_tsv_file + '.cleaned'
+    cleaned_tsv_file = f"{raw_tsv_file}.cleaned"
 
     # Open input and output files
     with open(raw_tsv_file, 'r') as infile, open(cleaned_tsv_file, 'w') as outfile:
@@ -93,7 +95,6 @@ def main():
     print('+--------------------------------------------+')
     print('Number of Hypothetical proteins are:', num_of_hypos)
     print('+--------------------------------------------+')
-
     for category in cog_dictionary_weighted.keys():
         if category == 'Hypo':
             continue
@@ -105,8 +106,12 @@ def main():
     print('Total number of queries:', "{:.1f}".format(nums))
 
     # Larger grouping: group labels into 6 categories
-    grouped = {'Cellular processing and signaling': 0, 'Hypothetical protein': 0,  'Information storage and processing': 0, 'Metabolism': 0,
-            'Mobileome': 0, 'Poorly characterized': 0}
+    grouped = {'Cellular processing and signaling': 0, 
+               'Hypothetical protein': 0,  
+               'Information storage and processing': 0, 
+               'Metabolism': 0,
+               'Mobileome': 0, 
+               'Poorly characterized': 0}
 
     metabolism = ['C', 'E', 'F', 'G', 'H', 'I', 'P', 'Q']
     info_storage_and_processing = ['A', 'B', 'J', 'K', 'L']
@@ -151,7 +156,8 @@ def main():
     print('+--------------------------------------------+')
 
     # Create COG CSV file
-    cogfile_name = save_path + group_name + '_' + types + '_' + 'cog.csv'
+    cogfile_name = os.path.join(save_path, f"{group_name}_{types}_cog.csv")
+
     with open(cogfile_name, 'w') as cogfile:
         cogfile.write('group,cog,counts\n')
         sequence = [cellular_processing_and_signaling, hypo, info_storage_and_processing,
@@ -208,8 +214,10 @@ def main():
     font_color = '#000000'  # Default: white
 
     # Labels that will be written on the plot
-    groups_label = ['Cellular processing \n and signaling', 'Hypothetical protein',
-                    'Information storage \n and processing', 'Metabolism', 
+    groups_label = ['Cellular processing \n and signaling', 
+                    'Hypothetical protein',
+                    'Information storage \n and processing', 
+                    'Metabolism', 
                     'Mobileome',
                     'Poorly characterized']
 
@@ -245,10 +253,12 @@ def main():
             cogs_label_nonzero_num.append('')
     
     # Legends
-    groups_legend = ['Cellular processing and signaling', 'Hypothetical protein',
-                    'Information storage and processing', 'Metabolism', 
-                    'Mobileome',
-                    'Poorly characterized']
+    groups_legend = ['Cellular processing and signaling', 
+                     'Hypothetical protein',
+                     'Information storage and processing', 
+                     'Metabolism', 
+                     'Mobileome',
+                     'Poorly characterized']
 
     cogs_legend = ['[D] Cell cycle control, cell division, chromosome partitioning',
                    '[M] Cell wall/membrane/envelope biogenesis',
@@ -348,16 +358,15 @@ def main():
     ax.axis('equal')
 
     # Create a pie chart
-    plot_title = group_name + ' ' + types + ' ' + 'Genes'
-    save_title = group_name + '_' +  types + '_' +  'Genes'
-    figure_name = save_title + '.png'
+    plot_title = f"{group_name} {types} Genes"
+    save_title = f"{group_name}_{types}_Genes"
 
     # Set a title
     ax.set_title(plot_title, fontsize=60, pad=30, color=font_color)
 
     # Add a legend
     fig.legend(bbox_to_anchor=(0.75, 0.5), loc='center', labels=cogs_legend, fontsize=30)
-    plt.savefig(save_path + save_title + '.png', facecolor=facecolor)
+    plt.savefig(os.path.join(save_path, f"{save_title}.png"), facecolor=facecolor)
 
 
 if __name__ == "__main__":

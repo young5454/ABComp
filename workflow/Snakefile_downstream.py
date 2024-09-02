@@ -567,10 +567,10 @@ rule fasta_curation:
     shell:
         """
         mkdir {output.fasta_dir}
-        python workflow/scripts/core_shell_statistics.py \
+        python workflow/scripts/core_shell_statistics_v2.py \
+            --faa_path {input.faa_dir}/ \
             --text_path {input.text_path}/ \
             --save_path {output.fasta_dir}/ \
-            --faa_path {input.faa_dir}/ \
             --gpa {params.tmp_dir}/gene_presence_absence.csv \
             --summary {params.tmp_dir}/summary_statistics.txt > {params.statistics}
         """

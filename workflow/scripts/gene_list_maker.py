@@ -1,33 +1,34 @@
+import os
 import csv
 import argparse
 
 def gene_list_maker(input_csv_file, save_path):
     """
-    Makes 6 gene lists for multi-strain Roary results.
+    Makes 6 gene lists for multi-strain Roary results
     core_all.txt, core_nonhypo.txt, core_hypo.txt
     shells_all.txt, shells_nonhypo.txt, shells_hypo.txt
     """
     
     # Define the input and output file paths
-    core_all_file = save_path + 'core_all.txt'
-    core_nonhypo_file = save_path + 'core_nonhypo.txt'
-    core_hypo_file = save_path + 'core_hypo.txt'
+    core_all_txt = os.path.join(save_path, 'core_all.txt')
+    core_nonhypo_txt = os.path.join(save_path, 'core_nonhypo.txt')
+    core_hypo_txt = os.path.join(save_path, 'core_hypo.txt')
 
-    shells_all_file = save_path + 'shells_all.txt'
-    shells_nonhypo_file = save_path + 'shells_nonhypo.txt'
-    shells_hypo_file = save_path + 'shells_hypo.txt'
+    shells_all_txt = os.path.join(save_path, 'shells_all.txt')
+    shells_nonhypo_txt = os.path.join(save_path, 'shells_nonhypo.txt')
+    shells_hypo_txt = os.path.join(save_path, 'shells_hypo.txt')
 
     # Open the CSV file and output files
     with open(input_csv_file, mode='r', newline='') as csv_file, \
-            open(core_all_file, mode='w') as core_all, \
-            open(core_nonhypo_file, mode='w') as core_nonhypo, \
-            open(core_hypo_file, mode='w') as core_hypo, \
-            open(shells_all_file, mode='w') as shells_all, \
-            open(shells_nonhypo_file, mode='w') as shells_nonhypo, \
-            open(shells_hypo_file, mode='w') as shells_hypo:
+            open(core_all_txt, mode='w') as core_all, \
+            open(core_nonhypo_txt, mode='w') as core_nonhypo, \
+            open(core_hypo_txt, mode='w') as core_hypo, \
+            open(shells_all_txt, mode='w') as shells_all, \
+            open(shells_nonhypo_txt, mode='w') as shells_nonhypo, \
+            open(shells_hypo_txt, mode='w') as shells_hypo:
+        
         csv_reader = csv.reader(csv_file)
-
-        # Skip the header row if present
+        # Skip the header row
         next(csv_reader, None)
 
         for row in csv_reader:

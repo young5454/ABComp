@@ -1,5 +1,6 @@
-import yaml
+import os
 import argparse
+import yaml
 
 parser = argparse.ArgumentParser(description="Shell script generator for moving FAA files")
 parser.add_argument('--group_yml', required=True, help="Path to groups-strains information yaml file")
@@ -32,15 +33,15 @@ print("Now making shell scripts for moving FAA files into group folders...")
 
 f = open(script, "w")
 new_command = ""
-main_path = workspace + "2.Annotation/"
+main_path = os.path.join(workspace, "2.Annotation/")
 
 for group in groups_info.keys():
-    group_folder = save_path + group + '/' + dir_name
-    f.write("mkdir -p" + " " + group_folder + '\n')
+    group_folder = os.path.join(save_path, group, dir_name)
+    f.write(f"mkdir -p {group_folder}\n")
     for strain in groups_info[group]:
-        faa_path = main_path + group + '_' + strain + '/' + group + '_' + strain + '.faa'
-        new_command = "cp" + " " + faa_path + " " + group_folder
-        f.write(new_command + '\n')
+        faa_path = os.path.join(main_path, f"{group}_{strain}", f"{group}_{strain}.faa")
+        new_command = f"cp {faa_path} {group_folder}\n"
+        f.write(new_command)
 f.close()
 
 print()
