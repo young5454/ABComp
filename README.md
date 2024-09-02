@@ -4,6 +4,7 @@
 
 
 A Snakemake workflow for `<description>`
+<img src="ABComp.png" width="1000px" align="center" />
 
 # Getting Started
 ## Directory structure and file names
