@@ -63,14 +63,15 @@ ABComp requires pre-downloaded databases for running **BUSCO** assembly assessme
 ### BUSCO lineage datasets
 [BUSCO](https://busco.ezlab.org/busco_userguide.html#lineage-datasets/)
 
-BUSCO lineage datasets contain sets of highly conserved single-copy genes specific to different evolutionary lineages. These datasets are used to evaluate the completeness of genome assemblies by comparing the presence of these key genes in the assembly. Pre-download the appropriate lineage dataset according to the lineage of the input strain. The lineage datasets must be saved inside a directory named busco_downloads, inside your workspace directory.
+BUSCO lineage datasets contain sets of highly conserved single-copy genes specific to different evolutionary lineages. These datasets are used to evaluate the completeness of genome assemblies by comparing the presence of these key genes in the assembly. Pre-download the appropriate lineage dataset according to the lineage of the input strain. 
+⚠️ Make sure the lineage datasets are saved inside a directory named `busco_downloads`, inside your workspace directory.
 
 ### EggNOG annotation databases
 [eggnog-mapper](https://github.com/eggnogdb/eggnog-mapper)
 
 EggNOG-mapper databases consist of precomputed orthologous groups and functional annotations derived from a vast range of organisms. These databases enable the functional annotation of genes in your genome by mapping them to known orthologs and their associated functional data. Pre-downloading the necessary EggNOG-mapper databases ensures that the pipeline can efficiently perform functional annotation. 
 
-Please carefully read through the **Setup** section in the EggNOG-mapper wiki. ABComp assumes you have downloaded all the annotation databases with running the script provided by EggNOG-mapper with default option:
+⚠️ Please carefully read through the **Setup** section in the EggNOG-mapper wiki. ABComp assumes you have downloaded all the annotation databases with running the script provided by EggNOG-mapper with default option:
 
 ```
 download_eggnog_data.py
