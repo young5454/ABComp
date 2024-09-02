@@ -9,3 +9,4 @@ busco_*.log
 rm_fasta.sh
 tmp_envs/**
 busco_downloads
+readme.txt
