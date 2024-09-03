@@ -46,7 +46,7 @@ ABComp requires two configuration files for running the pipeline. These yaml fil
 
 `groups_original.yml` is a configuration file for the complete group-strain information of your clinical isolates. Below is an example yaml file of a 2-group, 5-strain setting :
 
-```
+```YAML
 NONMDR:
     - B0112
     - C0234
