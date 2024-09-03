@@ -8,6 +8,17 @@ A Snakemake workflow for `<description>`
 <img src="ABComp.png" width="1000px" align="center" />
 
 # Getting Started
+## Installation
+
+Clone and enter repository to create your workspace directory :
+
+```bash
+git clone https://github.com/young5454/ABComp.git
+cd ABComp && mkdir {your_workspace}
+```
+
+⚠️ Make sure your workspace name is correctly specified in the configuration file (please see section [Configuration file](#configuration-file) for more detail).
+
 ## Directory structure and file names
 ABComp starts with two main type of input data, the draft assembly of clinical isolates and Illumina paired-end short reads. In order for ABComp to run smoothly, the input data should be saved in a proper format of both directory structure and file names. 
 
@@ -25,14 +36,14 @@ The genomes and reads should be saved inside the workspace directory as below :
 
 ⚠️ Make sure all the file extensions strictly follow the names (`.fasta`, `.fastq.gz`) provided above. Also, the fastq read files should be gzipped beforehand. The directory names should **NOT** be altered.
 
-⚠️ Make sure your `{group}` and `{strain}` names do **NOT** contain a underscore (_) inside. The name formats are intended to have the unique underscore so that during the Snakemake run, the group and strain wildcard info are automatically extracted and saved. Also, the file names should perfectly match the names provided in the configuration file (please see section “Configuration file”).
+⚠️ Make sure your `{group}` and `{strain}` names do **NOT** contain a underscore (_) inside. The name formats are intended to have the unique underscore so that during the Snakemake run, the group and strain wildcard info are automatically extracted and saved. Also, the file names should perfectly match the names provided in the configuration file (please see section [Configuration file](#configuration-file) for more detail).
 
 The assembly polishing block will create a directory `trimmed/` inside each `{group}_{strain}/` folder after running adapter trimming, and save the trimmed reads. Also, the polished assemblies will be saved inside the `genome/` directory with a name format of `{group}_{strain}_polished.fasta`. 
 
 ⚠️ If you have your assemblies ready and plan to run only the downstream comparative analysis block, please save all of your genome assemblies with the name format of `{group}_{strain}_polished.fasta` inside the `genome/` directory.
 
 ## Configuration file
-ABComp requires two configuration files for running the pipeline. The yaml files can be found in the `config/` directory. 
+ABComp requires two configuration files for running the pipeline. These yaml files can be found in the `config/` directory. 
 
 `config.yml` is a default configuration setting for the overall Snakemake run. Make sure you specify the correct parameters and directory names of your preference.
 
@@ -67,13 +78,13 @@ BUSCO lineage datasets contain sets of highly conserved single-copy genes specif
 ⚠️ Make sure the lineage datasets are saved inside a directory named `busco_downloads`, inside your workspace directory.
 
 ### EggNOG annotation databases
-[eggnog-mapper](https://github.com/eggnogdb/eggnog-mapper)
+[EggNOG-mapper](https://github.com/eggnogdb/eggnog-mapper)
 
 EggNOG-mapper databases consist of precomputed orthologous groups and functional annotations derived from a vast range of organisms. These databases enable the functional annotation of genes in your genome by mapping them to known orthologs and their associated functional data. Pre-downloading the necessary EggNOG-mapper databases ensures that the pipeline can efficiently perform functional annotation. 
 
-⚠️ Please carefully read through the **Setup** section in the EggNOG-mapper wiki. ABComp assumes you have downloaded all the annotation databases with running the script provided by EggNOG-mapper with default option:
+⚠️ Please carefully read through the **Setup** section in the [EggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.12#user-content-Setup). ABComp assumes you have downloaded all the annotation databases with running the script provided by EggNOG-mapper with a default option:
 
-```
+```bash
 download_eggnog_data.py
 ```
 
