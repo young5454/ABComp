@@ -2,9 +2,6 @@
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
 
-
-A Snakemake workflow for `<description>`
-
 <img src="ABComp.png" width="1000px" align="center" />
 
 # Getting Started
@@ -56,7 +53,7 @@ NONMDR:
     - C3455
 MDR:
     - B0232
-	- D0991
+    - D0991
 ```
 ⚠️ Make sure that the group and strain names perfectly match with the draft assembly name format : `{group}_{strain}.fasta`. For example, the B0112 strain should have the directory and file name of `NONMDR_B0112`.
 
