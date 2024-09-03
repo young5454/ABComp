@@ -10,3 +10,4 @@ rm_fasta.sh
 tmp_envs/**
 busco_downloads
 readme.txt
+workflow/busco_downloads/
