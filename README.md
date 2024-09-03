@@ -86,3 +86,30 @@ download_eggnog_data.py
 ```
 
 That is, a directory named `data/` must be created within your EggNOG-mapper directory, then the above script is run to download all databases provided by EggNOG-mapper.
+
+# Running the Pipeline
+Once you have followed the Getting Started section and setup everything, you can start the Snakemake run!
+
+## Assembly polishing
+The below code will start the assembly polishing pipeline with using up to 4 cores. Make sure you activate the default conda environment before your Snakemake run.
+```bash
+conda activate env_default
+
+snakemake \
+	-s workflow/Snakefile_assembly_polishing.py \
+	--use-conda \
+	--cores 4
+```
+
+## Downstream comparative analysis
+The below code will start the downstream comparative analysis pipeline with using up to 4 cores. This task contains gene annotation, pangenome analysis, and more. Make sure you activate the default conda environment before your Snakemake run.
+
+```bash
+conda activate env_default
+
+snakemake \
+	-s workflow/Snakefile_downstream.py \
+	--use-conda \
+	--cores 4
+```
+
