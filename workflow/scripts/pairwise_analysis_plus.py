@@ -10,15 +10,36 @@ from fasta_maker_v2 import fasta_maker_list
 def pairwise_analysis(raw_blastp_file, query_seq, subject_seq,
                       pident_threshold, evalue_threshold, qcovs_threshold,
                       save_path, best_match_table, not_founds_table, pass_query_fasta, pass_subject_fasta, not_founds_fasta):
-        # Blastp Header
+        # BLASTp Header
         header = "qseqid\tsseqid\tpident\tlength\tmismatch\tgapopen\tqstart\tqend\tsstart\tsend\tevalue\tbitscore\tqcovs"
         header = header.split('\t')
 
-        # Read raw blastp output file
+        # Read raw BLASTp output file
         raw_blastp_file = pd.read_csv(raw_blastp_file, sep="\t", names=header)
         ## Print log
         print('+--------------------------------------------------------------------+')
         print('Total number of raw entries :', len(raw_blastp_file))
+
+        # UPDATE : 092024
+        # Check if any query entries are missing in the raw BLASTp file
+        query_entries = []
+        with open(query_seq, 'r') as faa:
+             for record in SeqIO.parse(faa, "fasta"):
+                  query_entries.append(record.id)
+
+        # Print basic stats
+        print('+--------------------------------------------------------------------+')
+        print('Total number of unique query entries :', len(np.unique(query_entries)))
+    
+        # Missings
+        missings = []
+        all_unique_queries = np.unique(raw_blastp_file['qseqid'])
+        for entry in query_entries:
+             if entry not in all_unique_queries:
+                  missings.append(str(entry))
+        print('+--------------------------------------------------------------------+')
+        print('Any entries missing in BLASTp query? :', len(missings))
+        print(missings)
 
         # Filtering with thresholds
         # 1. Percent identity threshold
@@ -27,7 +48,7 @@ def pairwise_analysis(raw_blastp_file, query_seq, subject_seq,
         print('+--------------------------------------------------------------------+')
         print('Total number of entries with pident threshold applied :', len(fil_blastp_file))
 
-        # 2. e-value threshold
+        # 2. E-value threshold
         fil_blastp_file = fil_blastp_file[fil_blastp_file['evalue'] < evalue_threshold]
         print('+--------------------------------------------------------------------+')
         print('Total number of entries with e-value threshold applied :', len(fil_blastp_file))
@@ -41,6 +62,8 @@ def pairwise_analysis(raw_blastp_file, query_seq, subject_seq,
         all_unique_queries = np.unique(raw_blastp_file['qseqid'])
         founds_list = np.unique(fil_blastp_file['qseqid'])
         not_founds_list = [prot for prot in all_unique_queries if prot not in founds_list]
+        # UPDATE : add missing terms to not_founds_list
+        not_founds_list = not_founds_list + missings
 
         # Terminate if 0 founds
         if len(founds_list) == 0:
@@ -72,6 +95,16 @@ def pairwise_analysis(raw_blastp_file, query_seq, subject_seq,
         fasta_maker_list(fasta_original=query_seq,
                          ids_list=not_founds_list,
                          save_path=os.path.join(save_path, not_founds_fasta))
+        
+        print('+--------------------------------------------------------------------+')
+        print('Total number of BestMatch entries :', len(np.unique(best_matches['qseqid'])))
+
+        print('+--------------------------------------------------------------------+')
+        print('Total number of NotFounds & Missing entries :', len(not_founds_list))
+
+        print('+--------------------------------------------------------------------+')
+        print('NotFounds + BestMatch + Missing = Unique query entries ?')
+        print('>>', len(np.unique(best_matches['qseqid'])) + len(not_founds_list) == len(np.unique(query_entries)))
 
         print("All outputs saved successfully")
         print('+--------------------------------------------------------------------+')
@@ -82,32 +115,32 @@ def main():
     parser = argparse.ArgumentParser(
         description=
         """
-        ++ This code will ease comparing two protein sets using Blastp ++
-        After a manual Blastp analysis is done, pairwise_analysis_plus.py will do the following :
-        1. Parse raw Blastp output table with pident, evalue and qcovs threshold for determining presence of query entry within subject set
-        2. The single best query-to-subject match (Best Matches) will be saved as a Blastp output table
+        ++ This code will ease comparing two protein sets using BLASTp ++
+        After a manual BLASTp analysis is done, pairwise_analysis_plus.py will do the following :
+        1. Parse raw BLASTp output table with pident, evalue and qcovs threshold for determining presence of query entry within subject set
+        2. The single best query-to-subject match (Best Matches) will be saved as a BLASTp output table
         3. The best match queries and subjects will be saved as a FASTA file 
-        4. Not-Found queries will be saved as a Blastp output table with all results
+        4. Not-Found queries will be saved as a BLASTp output table with all results
         5. Not-Found queries will be saved as a FASTA file
 
-        This code assumes Blastp analysis is conducted between two protein sets, with a qcovs option
+        This code assumes BLASTp analysis is conducted between two protein sets, with a qcovs option
         >> qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovs
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     # Inputs
-    parser.add_argument('-b', '--raw_blastp_file', required=True, help='Path to raw Blastp output file of pairwise comparison between two protein sets')
+    parser.add_argument('-b', '--raw_blastp_file', required=True, help='Path to raw BLASTp output file of pairwise comparison between two protein sets')
     parser.add_argument('-qf', '--query_seq', required=True, help='Path to representative FAA/FASTA file of query proteins')
     parser.add_argument('-sf', '--subject_seq', required=True, help='Path to representative FAA/FASTA file of subject proteins')
 
     # Thresholds
-    parser.add_argument('-p', '--pident', required=False, default=35, help='Threshold for percent identity. Default value is 35')
-    parser.add_argument('-e', '--evalue', required=False, default=0.001, help='Threshold for evalue. Default value is 0.001')
-    parser.add_argument('-c', '--qcovs', required=False, default=70, help='Threshold for qcovs. Default value is 70')
+    parser.add_argument('-p', '--pident', required=False, default=35, help='Percent identity threshold. Default value is 35')
+    parser.add_argument('-e', '--evalue', required=False, default=0.001, help='E-value threshold. Default value is 0.001')
+    parser.add_argument('-c', '--qcovs', required=False, default=70, help='Query coverage threshold. Default value is 70')
 
     # Outputs
     parser.add_argument('-s', '--save_path', required=False, default='./', help='Path to save all final data')
-    parser.add_argument('-bmt', '--best_match_table', required=False, default='best_match.csv', help='File name of best match Blastp output table')
-    parser.add_argument('-nft', '--not_founds_table', required=False, default='not_founds.csv', help='File name of not-founds table')
+    parser.add_argument('-bmt', '--best_match_table', required=False, default='best_match.csv', help='File name of best match BLASTp output table')
+    parser.add_argument('-nft', '--not_founds_table', required=False, default='not_founds.csv', help='File name of not-founds BLASTp output table')
     parser.add_argument('-pqf', '--pass_query_fasta', required=False, default='pass_query.fasta', help='File name of best match query FASTA')
     parser.add_argument('-psf', '--pass_subject_fasta', required=False, default='pass_subject.fasta', help='File name of best match subject FASTA')
     parser.add_argument('-nff', '--not_founds_fasta', required=False, default='not_founds.fasta', help='File name of not-founds query FASTA')

@@ -30,8 +30,8 @@ conda env create --name env_prokka --file workflow/envs/env_prokka.yml
 echo Creating conda environment for Roary : env_roary ...
 conda env create --name env_roary --file workflow/envs/env_roary.yml 
 
-# Egg-NOG-mapper & Downstream analyses
-echo Creating conda environment for Egg-NOG-mapper and more downstream analyses : env_emapper ...
+# EggNOG-mapper & Downstream analyses
+echo Creating conda environment for EggNOG-mapper and more downstream analyses : env_emapper ...
 conda env create --name env_emapper --file workflow/envs/env_emapper.yml 
 
 # Abricate

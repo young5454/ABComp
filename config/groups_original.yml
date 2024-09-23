@@ -1,14 +1,6 @@
-hvCRAB:
-  - A0006
-  - A0197
-  - A0220
-hvCRAB-MDR:
+hvCRAB-MDR-ts:
   - A0062
-  - A0277
   - A0292
-lvCRAB:
+lvCRAB-ts:
   - A0274
   - A0291
-lv:
-  - A0075
-  - A0137
