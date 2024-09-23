@@ -1,4 +1,4 @@
-## Configuration file
+# Configuration file
 ABComp requires two configuration files for running the pipeline. These yaml files can be found in the `config/` directory. 
 
 `config.yml` is a default configuration setting for the overall Snakemake run. Make sure you specify the correct parameters and directory names of your preference.
