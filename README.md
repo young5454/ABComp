@@ -172,7 +172,7 @@ python pairwise_analysis_plus.py \
 	-s Pairwise.Plus/ \                 # Path to save all final data
 	-bmt best_match.csv \               # File name of best match BLASTp output table
 	-nft not_founds.csv \               # File name of not-founds BLASTp output table
-	-pqf pass_query.fasta \      		# File name of best match query FASTA
-	-psf pass_subject.fasta \  			# File name of best match subject FASTA
-	-nff not_founds.fasta        		# File name of not-founds query FASTA
+	-pqf pass_query.fasta \             # File name of best match query FASTA
+	-psf pass_subject.fasta \           # File name of best match subject FASTA
+	-nff not_founds.fasta               # File name of not-founds query FASTA
 ```
