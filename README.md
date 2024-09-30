@@ -19,19 +19,23 @@ cd ABComp && mkdir {your_workspace}
 ## Directory structure and file names
 ABComp starts with two main type of input data, the draft assembly of clinical isolates and Illumina paired-end short reads. In order for ABComp to run smoothly, the input data should be saved in a proper format of both directory structure and file names. 
 
-The genomes and reads should be saved inside the workspace directory as below :
+All of the genomes, reads, and reference genbank file should be saved inside the workspace directory as below :
 
 ```
 0.Assembly
-└── {group}_{strain}
-    ├── genome
-    │   └── {group}_{strain}.fasta
-    └── reads
-        ├── {group}_{strain}_1.fastq.gz
-        └── {group}_{strain}_2.fastq.gz
+├── {group}_{strain}
+│   ├── genome
+│   │   └── {group}_{strain}.fasta
+│   └── reads
+│       ├── {group}_{strain}_1.fastq.gz
+│       └── {group}_{strain}_2.fastq.gz
+└── {ref}
+	├── genome
+	│	└── {ref}.fasta
+	└── {ref}.gb
 ```
 
-⚠️ Make sure all the file extensions strictly follow the names (`.fasta`, `.fastq.gz`) provided above. Also, the fastq read files should be gzipped beforehand. The directory names should **NOT** be altered.
+⚠️ Make sure all the file extensions strictly follow the names (`.fasta`, `.fastq.gz`, `.gb`) provided above. Also, the fastq read files should be gzipped beforehand. The fixed directory names should **NOT** be altered.
 
 ⚠️ Make sure your `{group}` and `{strain}` names do **NOT** contain a underscore (_) inside. The name formats are intended to have the unique underscore so that during the Snakemake run, the group and strain wildcard info are automatically extracted and saved. Also, the file names should perfectly match the names provided in the configuration file (please see section [Configuration file](#configuration-file) for more detail).
 
@@ -44,19 +48,20 @@ ABComp requires two configuration files for running the pipeline. These yaml fil
 
 `config.yml` is a default configuration setting for the overall Snakemake run. Make sure you specify the correct parameters and directory names of your preference.
 
-`groups_original.yml` is a configuration file for the complete group-strain information of your clinical isolates. Below is an example yaml file of a 2-group, 5-strain setting :
+`groups_original.yml` is a configuration file for the complete group-strain information of your clinical isolates. Below is an example yaml file of a 2-group, 6-strain setting :
 
 ```YAML
-NONMDR:
-    - B0112
-    - C0234
-    - C3455
-MDR:
-    - B0232
-    - D0991
+IPMR:
+    - BFO17
+    - BFO18
+    - BFS01
+IPMS:
+    - BFO42
+    - BFO67
+	- BFO85
 ```
 
-⚠️ Make sure that the group and strain names perfectly match with the draft assembly name format : `{group}_{strain}.fasta`. For example, the B0112 strain should have the directory and file name of `NONMDR_B0112`.
+⚠️ Make sure that the group and strain names perfectly match with the draft assembly name format : `{group}_{strain}.fasta`. For example, the BFO17 strain should have the directory and file name of `IPMR_BFO17`.
 
 ## Conda environments
 ABComp suggests single conda environment for a single software for avoiding potential dependency errors. Before running the pipeline, make sure you have all of the environments set with the provided yaml files. The yaml file of each individual environment can be found in `workflow/envs/`.
@@ -82,7 +87,7 @@ BUSCO lineage datasets contain sets of highly conserved single-copy genes specif
 
 EggNOG-mapper databases consist of precomputed orthologous groups and functional annotations derived from a vast range of organisms. These databases enable the functional annotation of genes in your genome by mapping them to known orthologs and their associated functional data. Pre-downloading the necessary EggNOG-mapper databases ensures that the pipeline can efficiently perform functional annotation. 
 
-⚠️ Please carefully read through the **Setup** section in the [EggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.12#user-content-Setup). ABComp assumes you have downloaded all the annotation databases with running the script provided by EggNOG-mapper with a default option:
+⚠️ Please carefully read through the **Setup** section in the [EggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.12#user-content-Setup). ABComp assumes you have downloaded all the annotation databases with running the script provided by EggNOG-mapper with a **default option**:
 
 ```bash
 download_eggnog_data.py
@@ -91,7 +96,7 @@ download_eggnog_data.py
 That is, a directory named `data/` must be created within your EggNOG-mapper directory, then the above script is run to download all databases provided by EggNOG-mapper.
 
 ### Trimmomatic adapter FASTAs
-For running trimmomatic, please save the required adapter sequence FASTAs you need to specify in the `adapters/` directory inside your workspace. The sequence FASTA files can be acquired from the [Trimmomatic github](https://github.com/usadellab/Trimmomatic)
+For running trimmomatic, please save the required adapter sequence FASTAs you need to specify in the `adapters/` directory inside your workspace. The sequence FASTA files can be acquired from the [Trimmomatic github](https://github.com/usadellab/Trimmomatic).
 
 # Running the Pipeline
 Once you have followed the Getting Started section and setup everything, you can start the Snakemake run!
@@ -109,7 +114,7 @@ snakemake \
 ```
 
 ## Downstream comparative analysis
-The below code will start the downstream comparative analysis pipeline with using up to 4 cores. This task contains gene annotation, pangenome analysis, and more. Make sure you activate the default conda environment before your Snakemake run.
+The below code will start the downstream comparative analysis pipeline with using up to 4 cores. This task contains gene annotation, pangenome analysis, antibiotic resistance gene finding and more. Make sure you activate the default conda environment before your Snakemake run.
 
 ```bash
 conda activate env_default
@@ -122,7 +127,7 @@ snakemake \
 
 # Pathogenic marker discovery
 <img src="docs/figures/pathogenic_marker_discovery.png" width="1000px" align="center" />
-The pathogenic marker discovery module operates on the result of commandline BLASTp, therefore the user should first manually conduct the alignment process. In this example, group A’s core set is queried to the total annotation set of a single strain X.
+The pathogenic marker discovery module operates on the result of commandline BLASTp, therefore the user should first manually conduct the alignment process. In this example, let group B’s core set is queried to the total annotation set of a single strain X.
 
 First, create the subject database :
 
@@ -131,7 +136,7 @@ First, create the subject database :
 makeblastdb \
 	-in strain_X_annot.fasta \
 	-dbtype prot \
-		-out strain_X_annnot
+	-out strain_X_annnot
 ```
 
 Next, run BLASTp to query all the core entries to the subject database :
@@ -139,9 +144,9 @@ Next, run BLASTp to query all the core entries to the subject database :
 ```bash
 # Advanced: Coverage option
 blastp \
-	-query group_A_core.fasta \
+	-query group_B_core.fasta \
 	-db strain_X_annnot \
-	-out core_A_to_strain_X.csv \
+	-out core_B_to_strain_X.csv \
 	-outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovs"
 ```
 
@@ -158,16 +163,16 @@ Below is a run with setting the percent identity threshold as 35, E-value thresh
 
 ```bash
 python pairwise_analysis_plus.py \
-	-b core_A_to_strain_X.csv \         # Path to raw BLASTp output table
-	-qf core_A.fasta \                  # Path to query set FASTA
+	-b core_B_to_strain_X.csv \         # Path to raw BLASTp output table
+	-qf core_B.fasta \                  # Path to query set FASTA
 	-sf strain_X.fasta \                # Path to subject set FASTA
 	-p 35 \                             # Percent identity threshold
 	-e 0.001 \                          # E-value threshold
 	-c 80 \                             # Query coverage threshold
 	-s Pairwise.Plus/ \                 # Path to save all final data
-	-bmt best_match_core_A.csv \        # File name of best match BLASTp output table
-	-nft not_founds_core_A.csv \        # File name of not-founds BLASTp output table
-	-pqf pass_query_core_A.fasta \      # File name of best match query FASTA
-	-psf pass_subject_strain_X.fasta \  # File name of best match subject FASTA
-	-nff not_founds_core_A.fasta        # File name of not-founds query FASTA
+	-bmt best_match.csv \               # File name of best match BLASTp output table
+	-nft not_founds.csv \               # File name of not-founds BLASTp output table
+	-pqf pass_query.fasta \      		# File name of best match query FASTA
+	-psf pass_subject.fasta \  			# File name of best match subject FASTA
+	-nff not_founds.fasta        		# File name of not-founds query FASTA
 ```

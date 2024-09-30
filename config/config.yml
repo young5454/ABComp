@@ -4,11 +4,6 @@
 # Workspace directory
 workspace: "/workspace/ABComparative/results/"
 
-# Flye
-# flye_read_type: "--pacbio-hifi"
-# flye_genome_size: "4m"
-# flye_threads: 16
-
 # Fastqc
 fastqc_threads: 8
 

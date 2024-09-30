@@ -1,6 +1,8 @@
-mkdir -p /workspace/ABComparative/results/5.AllGroups/hvCRAB-MDR-ts/faas/
-cp /workspace/ABComparative/results/2.Annotation/hvCRAB-MDR-ts_A0062/hvCRAB-MDR-ts_A0062.faa /workspace/ABComparative/results/5.AllGroups/hvCRAB-MDR-ts/faas/
-cp /workspace/ABComparative/results/2.Annotation/hvCRAB-MDR-ts_A0292/hvCRAB-MDR-ts_A0292.faa /workspace/ABComparative/results/5.AllGroups/hvCRAB-MDR-ts/faas/
-mkdir -p /workspace/ABComparative/results/5.AllGroups/lvCRAB-ts/faas/
-cp /workspace/ABComparative/results/2.Annotation/lvCRAB-ts_A0274/lvCRAB-ts_A0274.faa /workspace/ABComparative/results/5.AllGroups/lvCRAB-ts/faas/
-cp /workspace/ABComparative/results/2.Annotation/lvCRAB-ts_A0291/lvCRAB-ts_A0291.faa /workspace/ABComparative/results/5.AllGroups/lvCRAB-ts/faas/
+mkdir -p /workspace/ABComparative/results/5.AllGroups/IPMR/faas/
+cp /workspace/ABComparative/results/2.Annotation/IPMR_BFO17/IPMR_BFO17.faa /workspace/ABComparative/results/5.AllGroups/IPMR/faas/
+cp /workspace/ABComparative/results/2.Annotation/IPMR_BFO18/IPMR_BFO18.faa /workspace/ABComparative/results/5.AllGroups/IPMR/faas/
+cp /workspace/ABComparative/results/2.Annotation/IPMR_BFS01/IPMR_BFS01.faa /workspace/ABComparative/results/5.AllGroups/IPMR/faas/
+mkdir -p /workspace/ABComparative/results/5.AllGroups/IPMS/faas/
+cp /workspace/ABComparative/results/2.Annotation/IPMS_BFO42/IPMS_BFO42.faa /workspace/ABComparative/results/5.AllGroups/IPMS/faas/
+cp /workspace/ABComparative/results/2.Annotation/IPMS_BFO67/IPMS_BFO67.faa /workspace/ABComparative/results/5.AllGroups/IPMS/faas/
+cp /workspace/ABComparative/results/2.Annotation/IPMS_BFO85/IPMS_BFO85.faa /workspace/ABComparative/results/5.AllGroups/IPMS/faas/

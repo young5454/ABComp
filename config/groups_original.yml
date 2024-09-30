@@ -1,6 +1,8 @@
-hvCRAB-MDR-ts:
-  - A0062
-  - A0292
-lvCRAB-ts:
-  - A0274
-  - A0291
+IPMR:
+  - BFO17
+  - BFO18
+  - BFS01
+IPMS:
+  - BFO42
+  - BFO67
+  - BFO85
