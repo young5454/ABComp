@@ -58,7 +58,7 @@ IPMR:
 IPMS:
     - BFO42
     - BFO67
-	- BFO85
+    - BFO85
 ```
 
 ⚠️ Make sure that the group and strain names perfectly match with the draft assembly name format : `{group}_{strain}.fasta`. For example, the BFO17 strain should have the directory and file name of `IPMR_BFO17`.
