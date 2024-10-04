@@ -821,11 +821,5 @@ rule abricate_ref:
             --minid {params.minid} \
             --mincov {params.mincov} \
             --nopath \
-            --db plasmidfinder {input.ref_fna} > {output.out_dir}/plasmidfinder.tab
-
-        abricate \
-            --minid {params.minid} \
-            --mincov {params.mincov} \
-            --nopath \
             --db resfinder {input.ref_fna} > {output.out_dir}/resfinder.tab
         """

@@ -30,9 +30,9 @@ All of the genomes, reads, and reference genbank file should be saved inside the
 │       ├── {group}_{strain}_1.fastq.gz
 │       └── {group}_{strain}_2.fastq.gz
 └── {ref}
-	├── genome
-	│	└── {ref}.fasta
-	└── {ref}.gb
+    ├── genome
+    │	└── {ref}.fasta
+    └── {ref}.gb
 ```
 
 ⚠️ Make sure all the file extensions strictly follow the names (`.fasta`, `.fastq.gz`, `.gb`) provided above. Also, the fastq read files should be gzipped beforehand. The fixed directory names should **NOT** be altered.
