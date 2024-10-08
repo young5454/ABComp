@@ -751,12 +751,14 @@ rule abricate_strain:
             --nopath \
             --db argannot {input.strain_fna} > {output.out_dir}/argannot.tab
 
-        abricate --minid {params.minid} \
+        abricate \
+            --minid {params.minid} \
             --mincov {params.mincov} \
             --nopath \
             --db card {input.strain_fna} > {output.out_dir}/card.tab
 
-        abricate --minid {params.minid} \
+        abricate \
+            --minid {params.minid} \
             --mincov {params.mincov} \
             --nopath \
             --db megares {input.strain_fna} > {output.out_dir}/megares.tab
@@ -765,13 +767,13 @@ rule abricate_strain:
             --minid {params.minid} \
             --mincov {params.mincov} \
             --nopath \
-            --db plasmidfinder {input.strain_fna} > {output.out_dir}/plasmidfinder.tab
+            --db resfinder {input.strain_fna} > {output.out_dir}/resfinder.tab
 
         abricate \
             --minid {params.minid} \
             --mincov {params.mincov} \
             --nopath \
-            --db resfinder {input.strain_fna} > {output.out_dir}/resfinder.tab
+            --db vfdb {input.strain_fna} > {output.out_dir}/vfdb.tab
         """
 
 
@@ -822,4 +824,10 @@ rule abricate_ref:
             --mincov {params.mincov} \
             --nopath \
             --db resfinder {input.ref_fna} > {output.out_dir}/resfinder.tab
+
+        abricate \
+            --minid {params.minid} \
+            --mincov {params.mincov} \
+            --nopath \
+            --db vfdb {input.ref_fna} > {output.out_dir}/vfdb.tab
         """

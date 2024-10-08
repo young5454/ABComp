@@ -80,7 +80,7 @@ ABComp requires pre-downloaded databases for running **BUSCO** assembly assessme
 
 BUSCO lineage datasets contain sets of highly conserved single-copy genes specific to different evolutionary lineages. These datasets are used to evaluate the completeness of genome assemblies by comparing the presence of these key genes in the assembly. Pre-download the appropriate lineage dataset according to the lineage of the input strain. 
 
-⚠️ Make sure the lineage datasets are saved inside a directory named `busco_downloads`, inside your workspace directory.
+⚠️ Make sure the lineage datasets are saved inside a directory named `busco_downloads/`, inside your workspace directory.
 
 ### EggNOG annotation databases
 [EggNOG-mapper](https://github.com/eggnogdb/eggnog-mapper)
