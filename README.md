@@ -2,7 +2,7 @@
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
 
-<img src="docs/figures/ABComp.png" width="1000px" align="center" />
+<img src="docs/figures/ABComp.v2.png" width="1000px" align="center" />
 
 # Getting Started
 ## Installation
@@ -113,8 +113,8 @@ snakemake \
 	--cores 4
 ```
 
-## Downstream comparative analysis
-The below code will start the downstream comparative analysis pipeline with using up to 4 cores. This task contains gene annotation, pangenome analysis, antibiotic resistance gene finding and more. Make sure you activate the default conda environment before your Snakemake run.
+## Comparative genomics
+The below code will start the comparative analysis pipeline with using up to 4 cores. This task contains gene annotation, pangenome analysis, antibiotic resistance gene finding and more. Make sure you activate the default conda environment before your Snakemake run.
 
 ```bash
 conda activate env_default
@@ -126,7 +126,7 @@ snakemake \
 ```
 
 # Pathogenic marker discovery
-<img src="docs/figures/pathogenic_marker_discovery.png" width="1000px" align="center" />
+<img src="docs/figures/downstream.png" width="1000px" align="center" />
 The pathogenic marker discovery module operates on the result of commandline BLASTp, therefore the user should first manually conduct the alignment process. In this example, let group B’s core set is queried to the total annotation set of a single strain X.
 
 First, create the subject database :
