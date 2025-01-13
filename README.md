@@ -31,9 +31,9 @@ GROUP2:
     - STRAIN4
     - STRAIN5
 GROUP3:
-	- STRAIN6
-	- STRAIN7
-	- STRAIN8
+    - STRAIN6
+    - STRAIN7
+    - STRAIN8
 ```
 
 ## Directory structure and file names
