@@ -1,6 +1,7 @@
 # ABComp : Assembly Polishing and Bacterial Whole-genome Comparison Pipeline for Multi-group Clinical Isolates
 
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
+![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)
 
 <img src="docs/figures/ABComp.v2.png" width="1000px" align="center" />
 
@@ -14,12 +15,39 @@ git clone https://github.com/young5454/ABComp.git
 cd ABComp && mkdir {your_workspace}
 ```
 
-⚠️ Make sure your workspace name is correctly specified in the configuration file (please see section [Configuration file](#configuration-file) for more detail).
+⚠️ Make sure the name of your workspace is correctly specified in the configuration file (please see section [Configuration file](#configuration-file) for more detail).
+
+## Grouping your isolates
+ABComp includes the process of group-level comparison analysis of multiple clinical isolates. Therefore, grouping information of all isolates are required before creating initial directories. 
+
+`groups_original.yml` is a configuration file for the complete group-strain information of your clinical isolates. This configuration file can be found at the `config/` directory of ABComp. Please adjust the group and strain name according to your samples. Below is an example yaml file of a 2-group, 6-strain setting :
+
+```YAML
+GROUP1:
+    - STRAIN1
+    - STRAIN2
+    - STRAIN3
+GROUP2:
+    - STRAIN4
+    - STRAIN5
+GROUP3:
+    - STRAIN6
+	- STRAIN7
+	- STRAIN8
+```
 
 ## Directory structure and file names
 ABComp starts with two main type of input data, the draft assembly of clinical isolates and Illumina paired-end short reads. In order for ABComp to run smoothly, the input data should be saved in a proper format of both directory structure and file names. 
 
-All of the genomes, reads, and reference genbank file should be saved inside the workspace directory as below :
+The pipelines starts from the root directory `0.Assembly`, inside your workspace directory. Running `init_dir_settings.py` automates the directory creating process in this root directory, using group and strain names specified in `group_original.yml`.
+
+```bash
+python init_dir_settings.py \
+	-g config/group_original.yml \
+	-b {your_workspace}/0.Assembly
+```
+
+After proper naming, all of the genomes, reads, and reference genbank file should be saved inside the workspace directory as below :
 
 ```
 0.Assembly
@@ -37,31 +65,14 @@ All of the genomes, reads, and reference genbank file should be saved inside the
 
 ⚠️ Make sure all the file extensions strictly follow the names (`.fasta`, `.fastq.gz`, `.gb`) provided above. Also, the fastq read files should be gzipped beforehand. The fixed directory names should **NOT** be altered.
 
-⚠️ Make sure your `{group}` and `{strain}` names do **NOT** contain a underscore (_) inside. The name formats are intended to have the unique underscore so that during the Snakemake run, the group and strain wildcard info are automatically extracted and saved. Also, the file names should perfectly match the names provided in the configuration file (please see section [Configuration file](#configuration-file) for more detail).
+⚠️ Make sure your `{group}` and `{strain}` names do **NOT** contain a underscore (_) inside. The name formats are intended to have the unique underscore so that during the Snakemake run, the group and strain wildcard info are automatically extracted and saved.
 
 The assembly polishing module will create a directory `trimmed/` inside each `{group}_{strain}/` folder after running adapter trimming, and save the trimmed reads. Also, the polished assemblies will be saved inside the `genome/` directory with a name format of `{group}_{strain}_polished.fasta`. 
 
-⚠️ If you have your assemblies ready and plan to run only the downstream comparative analysis module, please save all of your genome assemblies with the name format of `{group}_{strain}_polished.fasta` inside the `genome/` directory.
+⚠️ If you have your assemblies ready and plan to run only the comparative genomics module, please save all of your genome assemblies with the name format of `{group}_{strain}_polished.fasta` inside the `genome/` directory.
 
 ## Configuration file
-ABComp requires two configuration files for running the pipeline. These yaml files can be found in the `config/` directory. 
-
-`config.yml` is a default configuration setting for the overall Snakemake run. Make sure you specify the correct parameters and directory names of your preference.
-
-`groups_original.yml` is a configuration file for the complete group-strain information of your clinical isolates. Below is an example yaml file of a 2-group, 6-strain setting :
-
-```YAML
-IPMR:
-    - BFO17
-    - BFO18
-    - BFS01
-IPMS:
-    - BFO42
-    - BFO67
-    - BFO85
-```
-
-⚠️ Make sure that the group and strain names perfectly match with the draft assembly name format : `{group}_{strain}.fasta`. For example, the BFO17 strain should have the directory and file name of `IPMR_BFO17`.
+`config.yml` is a default configuration setting for the overall Snakemake run. Make sure you specify the correct parameters and directory names of your preference. This file can be found in the `config/` directory. 
 
 ## Conda environments
 ABComp suggests single conda environment for a single software for avoiding potential dependency errors. Before running the pipeline, make sure you have all of the environments set with the provided yaml files. The yaml file of each individual environment can be found in `workflow/envs/`.
@@ -96,10 +107,10 @@ download_eggnog_data.py
 That is, a directory named `data/` must be created within your EggNOG-mapper directory, then the above script is run to download all databases provided by EggNOG-mapper.
 
 ### Trimmomatic adapter FASTAs
-For running trimmomatic, please save the required adapter sequence FASTAs you need to specify in the `adapters/` directory inside your workspace. The sequence FASTA files can be acquired from the [Trimmomatic github](https://github.com/usadellab/Trimmomatic).
+For running trimmomatic, please save the required adapter sequence FASTAs you need to specify in the `adapters/` directory inside your workspace. The adapter FASTA files can be acquired from the [Trimmomatic github](https://github.com/usadellab/Trimmomatic).
 
 # Running the Pipeline
-Once you have followed the Getting Started section and setup everything, you can start the Snakemake run!
+Once you have followed the Getting Started section and setup everything, you can finally start the Snakemake run !
 
 ## Assembly polishing
 The below code will start the assembly polishing pipeline with using up to 4 cores. Make sure you activate the default conda environment before your Snakemake run.
@@ -114,20 +125,20 @@ snakemake \
 ```
 
 ## Comparative genomics
-The below code will start the comparative analysis pipeline with using up to 4 cores. This task contains gene annotation, pangenome analysis, antibiotic resistance gene finding and more. Make sure you activate the default conda environment before your Snakemake run.
+The below code will start the comparative genomics pipeline with using up to 4 cores. This task contains gene annotation, pangenome analysis, functional annotation, antibiotic resistance gene finding and more. Make sure you activate the default conda environment before your Snakemake run.
 
 ```bash
 conda activate env_default
 
 snakemake \
-	--snakefile workflow/Snakefile_downstream.py \
+	--snakefile workflow/Snakefile_comparative.py \
 	--use-conda \
 	--cores 4
 ```
 
 # Pathogenic marker discovery
 <img src="docs/figures/downstream.png" width="1000px" align="center" />
-The pathogenic marker discovery module operates on the result of commandline BLASTp, therefore the user should first manually conduct the alignment process. In this example, let group B’s core set is queried to the total annotation set of a single strain X.
+The downstream pathogenic marker discovery module operates on the result of commandline BLASTp, therefore the user should first conduct the protein alignment of interest. In this example, let Group B’s core set is queried to the total annotation set of a single Strain X, to screen the presence of Group B's core set (query) within Strain X (subject).
 
 First, create the subject database :
 
@@ -136,7 +147,7 @@ First, create the subject database :
 makeblastdb \
 	-in strain_X_annot.fasta \
 	-dbtype prot \
-	-out strain_X_annnot
+	-out {path/to/strain_X_annot_DB}
 ```
 
 Next, run BLASTp to query all the core entries to the subject database :
@@ -145,7 +156,7 @@ Next, run BLASTp to query all the core entries to the subject database :
 # Advanced: Coverage option
 blastp \
 	-query group_B_core.fasta \
-	-db strain_X_annnot \
+	-db {path/to/strain_X_annot_DB} \
 	-out core_B_to_strain_X.csv \
 	-outfmt "6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovs"
 ```
@@ -154,12 +165,12 @@ blastp \
 Finally, running `pairwise_analysis_plus.py` will do the following :
 
 1. Parse raw BLASTp output table with percent identity, E-value and query coverage threshold for determining presence of query entry within subject set
-2. For the passed queries, the single best query-to-subject match (Best Matches) will be saved as a BLASTp output table
+2. For the passed queries, a single best query-to-subject match (Best Matches) will be each saved as a BLASTp output table
 3. The best match queries and subjects will be saved as a FASTA file
-4. Not-found queries will be saved as a BLASTp output table with all results
-5. Not-found queries will be saved as a FASTA file
+4. Not-Found queries will be saved as a BLASTp output table with all results
+5. Not-Found queries will be saved as a FASTA file
 
-Below is a run with setting the percent identity threshold as 35, E-value threshold as 0.001, and query coverage threshold as 80 :
+Below is an example run with setting the percent identity threshold as 35, E-value threshold as 0.001, and query coverage threshold as 80 :
 
 ```bash
 python pairwise_analysis_plus.py \
@@ -176,3 +187,9 @@ python pairwise_analysis_plus.py \
 	-psf pass_subject.fasta \           # File name of best match subject FASTA
 	-nff not_founds.fasta               # File name of not-founds query FASTA
 ```
+
+For further plotting, multiple BLASTp, or integrating Core-to-Strain and Core-to-Core analysis results, please read through the provided codes written for our public dataset experiment :
+
+1. Automate multiple generation of BLASTp DB
+2. Inspect and summarize Not-Founds
+3. Summarize ABRicate results into heatmaps
