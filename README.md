@@ -31,7 +31,7 @@ GROUP2:
     - STRAIN4
     - STRAIN5
 GROUP3:
-    - STRAIN6
+	- STRAIN6
 	- STRAIN7
 	- STRAIN8
 ```
