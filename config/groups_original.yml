@@ -1,8 +1,45 @@
-IPMR:
-  - BFO17
-  - BFO18
-  - BFS01
-IPMS:
-  - BFO42
-  - BFO67
-  - BFO85
+# Klebsiella Pilot run
+hv:
+  - INF079
+  - INF119
+  - INF125
+  - INF177
+  - INF192
+  - INF341
+  - INF157
+  - INF158
+  - INF281
+  - INF298
+  - INF042
+  - INF059
+  - INF163
+  - INF164
+  - INF174
+  - INF201
+  - INF274
+  - INF278
+  - INF299
+  - INF358
+lv:
+  - INF032
+  - INF102
+  - INF156
+  - INF215
+  - INF319
+  - INF277
+  - INF302
+  - INF346
+  - INF044
+  - INF049
+  - INF188
+  - INF223
+  - INF247
+  - INF249
+  - INF250
+  - INF322
+  - INF329
+  - INF344
+  - INF355
+  - INF357
+  - INF361
+  - INF321

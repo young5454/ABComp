@@ -333,7 +333,7 @@ def main():
             labels=cogs_label_nonzero,
             labeldistance=0.85,
             rotatelabels=False,
-            textprops={'color':font_color, 'fontsize': 22, 'fontweight': 'bold'},
+            textprops={'color':font_color, 'fontsize': 30, 'fontweight': 'bold'},
             wedgeprops=dict(width=size, edgecolor='w'))
 
     # Plot grouped COGs
@@ -366,7 +366,7 @@ def main():
 
     # Add a legend
     fig.legend(bbox_to_anchor=(0.75, 0.5), loc='center', labels=cogs_legend, fontsize=30)
-    plt.savefig(os.path.join(save_path, f"{save_title}.png"), facecolor=facecolor)
+    plt.savefig(os.path.join(save_path, f"{save_title}.png"), facecolor=facecolor, dpi=300)
 
 
 if __name__ == "__main__":

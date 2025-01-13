@@ -16,7 +16,7 @@ def pairwise_analysis(raw_blastp_file, query_seq, subject_seq,
 
         # Read raw BLASTp output file
         raw_blastp_file = pd.read_csv(raw_blastp_file, sep="\t", names=header)
-        ## Print log
+        # Print log
         print('+--------------------------------------------------------------------+')
         print('Total number of raw entries :', len(raw_blastp_file))
 
@@ -51,7 +51,7 @@ def pairwise_analysis(raw_blastp_file, query_seq, subject_seq,
         # 2. E-value threshold
         fil_blastp_file = fil_blastp_file[fil_blastp_file['evalue'] < evalue_threshold]
         print('+--------------------------------------------------------------------+')
-        print('Total number of entries with e-value threshold applied :', len(fil_blastp_file))
+        print('Total number of entries with E-value threshold applied :', len(fil_blastp_file))
 
         # 3. Query coverage threshold
         fil_blastp_file = fil_blastp_file[fil_blastp_file['qcovs'] >= qcovs_threshold]
@@ -117,13 +117,13 @@ def main():
         """
         ++ This code will ease comparing two protein sets using BLASTp ++
         After a manual BLASTp analysis is done, pairwise_analysis_plus.py will do the following :
-        1. Parse raw BLASTp output table with pident, evalue and qcovs threshold for determining presence of query entry within subject set
+        1. Parse raw BLASTp output table with Percent identity, E-value and Query coverage threshold for determining presence of query entry within subject set
         2. The single best query-to-subject match (Best Matches) will be saved as a BLASTp output table
         3. The best match queries and subjects will be saved as a FASTA file 
         4. Not-Found queries will be saved as a BLASTp output table with all results
         5. Not-Found queries will be saved as a FASTA file
 
-        This code assumes BLASTp analysis is conducted between two protein sets, with a qcovs option
+        This code assumes BLASTp analysis is conducted between two protein sets, with a 'qcovs' option
         >> qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qcovs
         """,
         formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -139,8 +139,8 @@ def main():
 
     # Outputs
     parser.add_argument('-s', '--save_path', required=False, default='./', help='Path to save all final data')
-    parser.add_argument('-bmt', '--best_match_table', required=False, default='best_match.csv', help='File name of best match BLASTp output table')
-    parser.add_argument('-nft', '--not_founds_table', required=False, default='not_founds.csv', help='File name of not-founds BLASTp output table')
+    parser.add_argument('-bmt', '--best_match_table', required=False, default='best_match.tsv', help='File name of best match BLASTp output table')
+    parser.add_argument('-nft', '--not_founds_table', required=False, default='not_founds.tsv', help='File name of not-founds BLASTp output table')
     parser.add_argument('-pqf', '--pass_query_fasta', required=False, default='pass_query.fasta', help='File name of best match query FASTA')
     parser.add_argument('-psf', '--pass_subject_fasta', required=False, default='pass_subject.fasta', help='File name of best match subject FASTA')
     parser.add_argument('-nff', '--not_founds_fasta', required=False, default='not_founds.fasta', help='File name of not-founds query FASTA')

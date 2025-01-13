@@ -774,6 +774,12 @@ rule abricate_strain:
             --mincov {params.mincov} \
             --nopath \
             --db vfdb {input.strain_fna} > {output.out_dir}/vfdb.tab
+
+        abricate \
+            --minid {params.minid} \
+            --mincov {params.mincov} \
+            --nopath \
+            --db plasmidfinder {input.strain_fna} > {output.out_dir}/plasmidfinder.tab
         """
 
 
@@ -830,4 +836,10 @@ rule abricate_ref:
             --mincov {params.mincov} \
             --nopath \
             --db vfdb {input.ref_fna} > {output.out_dir}/vfdb.tab
+        
+        abricate \
+            --minid {params.minid} \
+            --mincov {params.mincov} \
+            --nopath \
+            --db plasmidfinder {input.ref_fna} > {output.out_dir}/plasmidfinder.tab
         """

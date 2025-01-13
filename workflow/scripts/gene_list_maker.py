@@ -2,7 +2,7 @@ import os
 import csv
 import argparse
 
-def gene_list_maker(input_csv_file, save_path):
+def gene_list_maker(input_csv_file, save_path, core_cutoff=0.95):
     """
     Makes 6 gene lists for multi-strain Roary results
     core_all.txt, core_nonhypo.txt, core_hypo.txt
@@ -34,17 +34,28 @@ def gene_list_maker(input_csv_file, save_path):
         for row in csv_reader:
             # Extract the entries starting from column 14
             entries = row[14:]
+        
+            ### UPDATE : Core cutoff All -> 95% or more
+            num_present = sum(1 for e in entries if e)
+            num_strains = len(entries)
+            presence_ratio = num_present / num_strains
 
-            # Check if all columns (entries) are filled
-            if all(entries):
-                core_all.write(row[14] + '\n')
-                # Write the leftmost entry (column 14) to core files based on annotation
+            # Check if columns (entries) are filled above core_cutoff
+            if presence_ratio >= core_cutoff:
+                # Select the leftmost entry
+                for gene in entries:
+                    if gene != '':
+                        core_entry = gene
+                        break
+                core_all.write(core_entry + '\n')
+
+                # Check annotation and write to core files
                 if row[2] == 'hypothetical protein':
-                    core_hypo.write(entries[0] + '\n')
+                    core_hypo.write(core_entry + '\n')
                 else:
-                    core_nonhypo.write(entries[0] + '\n')
+                    core_nonhypo.write(core_entry + '\n')
             else:
-                # Select the leftmost entry if shell
+                # Select the leftmost entry
                 for gene in entries:
                     if gene != '':
                         shell_entry = gene
@@ -56,7 +67,7 @@ def gene_list_maker(input_csv_file, save_path):
                     shells_hypo.write(shell_entry + '\n')
                 else:
                     shells_nonhypo.write(shell_entry + '\n')
-        
+
         print("Processing complete. Check save_path for results.")
 
 

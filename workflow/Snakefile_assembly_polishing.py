@@ -11,10 +11,13 @@ workspace = config["workspace"]
 GROUP, STRAIN = glob_wildcards(os.path.join(workspace, "0.Assembly/{group}_{strain}/genome"))
 # REF, = glob_wildcards(os.path.join(workspace, "0.Assembly/ref/genome/{ref}.fasta"))
 
+
+# Print Logo
+
 # Rule all
 rule all:
     input:
-        ### Fastqc-raw I/O files
+        ### FastQC-raw I/O files
         # Raw Illumina paired-end short reads
         expand(
             os.path.join(workspace, 
@@ -30,7 +33,7 @@ rule all:
             group=GROUP,
             strain=STRAIN,
         ),
-        # Fastqc htmls
+        # FastQC htmls
         expand(
             os.path.join(workspace, 
             "0.QC/{group}_{strain}/raw/{group}_{strain}_1_fastqc.html"),
@@ -45,7 +48,7 @@ rule all:
             group=GROUP,
             strain=STRAIN,
         ),
-        # Fastqc zips
+        # FastQC zips
         expand(
             os.path.join(workspace, 
             "0.QC/{group}_{strain}/raw/{group}_{strain}_1_fastqc.zip"),
@@ -91,8 +94,8 @@ rule all:
             group=GROUP,
             strain=STRAIN,
         ),
-        ### Fastqc-trimmed I/O files
-        # Fastqc htmls
+        ### FastQC-trimmed I/O files
+        # FastQC htmls
         expand(
             os.path.join(workspace, 
             "0.QC/{group}_{strain}/trimmed/{group}_{strain}_1_paired_fastqc.html"),
@@ -107,7 +110,7 @@ rule all:
             group=GROUP,
             strain=STRAIN,
         ),
-        # Fastqc zips
+        # FastQC zips
         expand(
             os.path.join(workspace, 
             "0.QC/{group}_{strain}/trimmed/{group}_{strain}_1_paired_fastqc.zip"),
@@ -183,6 +186,9 @@ rule all:
             group=GROUP,
             strain=STRAIN,
         ),
+        ### MultiQC dummy
+        os.path.join(workspace, "0.QC/multiqc_raw/.multiqc_done"),
+        os.path.join(workspace, "0.QC/multiqc_trimmed/.multiqc_done")
 
 
 # Rule to quality check raw Illumina paired-end short reads
@@ -202,7 +208,7 @@ rule fastqc_raw:
         zip2=os.path.join(workspace,
         "0.QC/{group}_{strain}/raw/{group}_{strain}_2_fastqc.zip"),
     message:
-        "Run Fastqc to raw Illumina paired-end short reads"
+        "Run FastQC to raw Illumina paired-end short reads"
     params:
         threads=config["fastqc_threads"],
         out_path=os.path.join(workspace, "0.QC/{group}_{strain}/raw/"),
@@ -218,13 +224,44 @@ rule fastqc_raw:
             {input.reads1} {input.reads2}
         
         mkdir -p {params.multiqc_path}
-        cd {params.out_path}
-        cp * {params.multiqc_path}
+        cp {params.out_path}* {params.multiqc_path}
+        """
 
+
+# UPDATE : Rule to integrate raw FastQC results
+rule multiqc_raw:
+    input:
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/raw/{group}_{strain}_1_fastqc.html"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        ),
+        expand(
+            os.path.join(workspace,
+            "0.QC/{group}_{strain}/raw/{group}_{strain}_2_fastqc.html"),
+            zip,
+            group=GROUP,
+            strain=STRAIN,
+        )
+    output:
+        # Dummy output file to ensure rule execution
+        os.path.join(workspace, "0.QC/multiqc_raw/.multiqc_done")
+    message:
+        "Run MultiQC to integrate raw FastQC reports"
+    params:
+        multiqc_path=os.path.join(workspace, "0.QC/multiqc_raw/")
+    conda:
+        "env_qc"
+    shell:
+        """
         multiqc {params.multiqc_path} \
             --force \
             -n fastqc_raw \
             -o {params.multiqc_path}
+
+        touch {output}
         """
 
 
@@ -287,8 +324,10 @@ rule fastqc_trimmed:
         "0.QC/{group}_{strain}/trimmed/{group}_{strain}_1_paired_fastqc.zip"),
         zip2=os.path.join(workspace,
         "0.QC/{group}_{strain}/trimmed/{group}_{strain}_2_paired_fastqc.zip"),
+        done=os.path.join(workspace, 
+        "0.QC/{group}_{strain}/trimmed/.fastqc_trimmed_done")
     message:
-        "Run Fastqc to trimmed Illumina paired-end short reads"
+        "Run FastQC to trimmed Illumina paired-end short reads"
     params:
         threads=config["fastqc_threads"],
         out_path=os.path.join(workspace, "0.QC/{group}_{strain}/trimmed/"),
@@ -304,13 +343,39 @@ rule fastqc_trimmed:
             {input.reads1} {input.reads2}
 
         mkdir -p {params.multiqc_path}
-        cd {params.out_path}
-        cp * {params.multiqc_path}
+        cp {params.out_path}* {params.multiqc_path}
 
+        touch {output.done}
+        """
+
+
+# UPDATE : Rule to integrate trimmed FastQC results
+rule multiqc_trimmed:
+    input:
+        expand(
+            os.path.join(workspace, 
+            "0.QC/{group}_{strain}/trimmed/.fastqc_trimmed_done"),
+            zip,
+            group=GROUP,
+            strain=STRAIN
+        )
+    output:
+        # Dummy output file to ensure rule execution
+        os.path.join(workspace, "0.QC/multiqc_trimmed/.multiqc_done")
+    message:
+        "Run MultiQC to integrate trimmed FastQC reports"
+    params:
+        multiqc_path=os.path.join(workspace, "0.QC/multiqc_trimmed/")
+    conda:
+        "env_qc"
+    shell:
+        """
         multiqc {params.multiqc_path} \
             --force \
             -n fastqc_trimmed \
             -o {params.multiqc_path}
+
+        touch {output}
         """
 
 

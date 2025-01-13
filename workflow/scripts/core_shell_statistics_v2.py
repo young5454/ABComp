@@ -5,6 +5,7 @@ import csv
 from fasta_maker_v2 import fasta_maker_text, fasta_maker_text_v2
 
 # 083124 : Revised version of core_shell_statistics.py
+# 121124 : Revised version to handle soft cores and cloud genes
 
 def core_all_fasta(faa_file, text_path, save_path):
     """
@@ -186,7 +187,7 @@ def main():
                                           text_path=text_path,
                                           save_path=save_path)
     
-    # Function calls - Shells
+    # Function calls - Shells : Roary Shell + Cloud genes
     cds_all_shells_count, non_cds_shells_count, no_entry_shells = shells_all_fasta(all_faa_files=all_faa_files,
                                                                                    text_path=text_path,
                                                                                    save_path=save_path)
@@ -198,13 +199,15 @@ def main():
                                               save_path=save_path)
     
     # Open summary_statistics.txt and parse Roary core & shell genes
+    # Core : Roary Core + Soft core genes
+    # Shell : Roary Shell + Cloud genes
     with open(summary, 'r') as file:
         # Split the data by lines
         lines = file.read().splitlines()
 
-        # Extract Roary core & shell genes
-        roary_core_genes = int(lines[0].split()[-1])
-        roary_shell_genes = int(lines[2].split()[-1])
+        # Extract Roary Core & Shell genes
+        roary_core_genes = int(lines[0].split()[-1]) + int(lines[1].split()[-1])
+        roary_shell_genes = int(lines[2].split()[-1]) + int(lines[3].split()[-1])
 
     # Print result statistics
     print('+--------------------------------------------------------------------+')
@@ -213,7 +216,7 @@ def main():
     print('+--------------------------------------------------------------------+')
     print('+        Successfully wrote all core queries to result FASTAs        +')
     print('+--------------------------------------------------------------------+')
-    print('The total number of ROARY core genes are :', roary_core_genes)
+    print('The total number of ROARY Core + Soft-Core genes are :', roary_core_genes)
     print('>> Please refer to summary_statistics.txt for this info \n')
     print('The total number of CDS all core genes are :', cds_all_core_count)
     print('The total number of CDS non-hypo core genes are :', cds_core_non_hypo_count)
@@ -226,20 +229,20 @@ def main():
     print('>>', sum == cds_all_core_count)
     print('+--------------------------------------------------------------------+')
 
-    print('# of CDS all core + # of non-CDS core = # of ROARY core?')
+    print('# of CDS all core + # of non-CDS core = # of ROARY Core + Soft-Core?')
     sumy = cds_all_core_count + non_cds_core_count
     print('>>', sumy == roary_core_genes)
     print('+--------------------------------------------------------------------+')
 
-    print('The ids of non-CDS core genes are as follows:')
+    print('The IDs of non-CDS core genes are as follows :')
     for ids in no_entry_cores: print(ids)
-    print('These are one of the followings: tRNA, rRNA, tmRNA, ncRNA, ...')
+    print('These are one of the followings : tRNA, rRNA, tmRNA, ncRNA, ...')
     print('>> Please refer to .ffn file for each gene info')
         
     print('+--------------------------------------------------------------------+')
     print('+       Successfully wrote all shell queries to result FASTAs        +')
     print('+--------------------------------------------------------------------+')
-    print('The total number of ROARY shell genes are :', roary_shell_genes)
+    print('The total number of ROARY Shell + Cloud genes are :', roary_shell_genes)
     print('>> Please refer to summary_statistics.txt for this info \n')
     print('The total number of CDS all shell genes are :', cds_all_shells_count)
     print('The total number of CDS non-hypo shell genes are :', cds_shells_non_hypo_count)
@@ -252,12 +255,12 @@ def main():
     print('>>', sumyy == cds_all_shells_count)
     print('+--------------------------------------------------------------------+')
 
-    print('# of CDS all shells + # of non-CDS shells = # of ROARY shells?')
+    print('# of CDS all shells + # of non-CDS shells = # of ROARY Shell + Cloud?')
     sumyyy = cds_all_shells_count + non_cds_shells_count
     print('>>', sumyyy == roary_shell_genes)
     print('+--------------------------------------------------------------------+')
 
-    print('The ids of non-CDS shell genes are as follows:')
+    print('The IDs of non-CDS shell genes are as follows :')
     for ids in no_entry_shells: print(ids)
     print('These are one of the followings: tRNA, rRNA, tmRNA, ncRNA, ...')
     print('>> Please refer to .ffn file for each gene info')
