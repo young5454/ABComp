@@ -20,7 +20,7 @@ cd ABComp && mkdir {your_workspace}
 ## Grouping your isolates
 ABComp includes the process of group-level comparison analysis of multiple clinical isolates. Therefore, grouping information of all isolates are required before creating initial directories. 
 
-`groups_original.yml` is a configuration file for the complete group-strain information of your clinical isolates. This configuration file can be found at the `config/` directory of ABComp. Please adjust the group and strain name according to your samples. Below is an example yaml file of a 2-group, 6-strain setting :
+`groups_original.yml` is a configuration file for the complete group-strain information of your clinical isolates. This configuration file can be found at the `config/` directory of ABComp. Please adjust the group and strain name according to your samples. Below is an example yaml file of a 3-group, 8-strain setting :
 
 ```YAML
 GROUP1:

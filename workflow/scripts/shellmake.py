@@ -35,11 +35,11 @@ new_command = ""
 main_path = os.path.join(workspace, "2.Annotation/")
 
 # Make working directories
-f.write(f"mkdir {save_path}\n")
+f.write(f"mkdir -p {save_path}\n")
 
 for group in groups_info.keys():
     group_folder = os.path.join(save_path, f"{group}/")
-    f.write(f"mkdir {group_folder}\n")
+    f.write(f"mkdir -p {group_folder}\n")
     for strain in groups_info[group]:
         gff_path = os.path.join(main_path, f"{group}_{strain}", f"{group}_{strain}.gff")
         new_command = f"cp {gff_path} {group_folder}\n"

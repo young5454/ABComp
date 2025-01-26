@@ -469,7 +469,8 @@ rule move_gff_files:
 # Rule to run Roary for STRAINS within GROUPS
 rule roary_within_group:
     input:
-        tmp_dir=os.path.join(workspace, "4.RoaryGroup/{group}/"),
+        # tmp_dir=os.path.join(workspace, "4.RoaryGroup/{group}/"),
+        tmp_dir=rules.move_gff_files.output.tmp_dir,
     output:
         out_dir=directory(os.path.join(workspace, "4.RoaryGroup.tmp/{group}/")),
     params:

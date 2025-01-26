@@ -1,5 +1,5 @@
-mkdir /workspace/ABComparative/results/4.RoaryGroup/
-mkdir /workspace/ABComparative/results/4.RoaryGroup/hv/
+mkdir -p /workspace/ABComparative/results/4.RoaryGroup/
+mkdir -p /workspace/ABComparative/results/4.RoaryGroup/hv/
 cp /workspace/ABComparative/results/2.Annotation/hv_INF079/hv_INF079.gff /workspace/ABComparative/results/4.RoaryGroup/hv/
 cp /workspace/ABComparative/results/2.Annotation/hv_INF119/hv_INF119.gff /workspace/ABComparative/results/4.RoaryGroup/hv/
 cp /workspace/ABComparative/results/2.Annotation/hv_INF125/hv_INF125.gff /workspace/ABComparative/results/4.RoaryGroup/hv/
@@ -20,7 +20,7 @@ cp /workspace/ABComparative/results/2.Annotation/hv_INF274/hv_INF274.gff /worksp
 cp /workspace/ABComparative/results/2.Annotation/hv_INF278/hv_INF278.gff /workspace/ABComparative/results/4.RoaryGroup/hv/
 cp /workspace/ABComparative/results/2.Annotation/hv_INF299/hv_INF299.gff /workspace/ABComparative/results/4.RoaryGroup/hv/
 cp /workspace/ABComparative/results/2.Annotation/hv_INF358/hv_INF358.gff /workspace/ABComparative/results/4.RoaryGroup/hv/
-mkdir /workspace/ABComparative/results/4.RoaryGroup/lv/
+mkdir -p /workspace/ABComparative/results/4.RoaryGroup/lv/
 cp /workspace/ABComparative/results/2.Annotation/lv_INF032/lv_INF032.gff /workspace/ABComparative/results/4.RoaryGroup/lv/
 cp /workspace/ABComparative/results/2.Annotation/lv_INF102/lv_INF102.gff /workspace/ABComparative/results/4.RoaryGroup/lv/
 cp /workspace/ABComparative/results/2.Annotation/lv_INF156/lv_INF156.gff /workspace/ABComparative/results/4.RoaryGroup/lv/
