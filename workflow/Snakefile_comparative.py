@@ -11,6 +11,22 @@ workspace = config["workspace"]
 GROUP, STRAIN = glob_wildcards(os.path.join(workspace, "0.Assembly/{group}_{strain}/genome"))
 REF, = glob_wildcards(os.path.join(workspace, "0.Assembly/ref/genome/{ref}.fasta"))
 
+# Print message
+print("+------------------------------------+")
+print("🧬 ABComp-Comparative Run Starting 🐍")
+print("+------------------------------------+\n")
+
+print("📂 GROUPs and STRAINs Detected :")
+group_strain_pairs = sorted(zip(GROUP, STRAIN), key=lambda x: x[0])
+for g, s in group_strain_pairs:
+    print(f" - GROUP : {g: <15} | STRAIN : {s}")
+
+print("\n📌 REFERENCE Genome:")
+print(f" - Ref : {REF}\n")
+
+print("+------------------------------------+\n")
+
+
 # Rule all
 rule all:
     input:
