@@ -12,9 +12,9 @@ GROUP, STRAIN = glob_wildcards(os.path.join(workspace, "0.Assembly/{group}_{stra
 REF, = glob_wildcards(os.path.join(workspace, "0.Assembly/ref/genome/{ref}.fasta"))
 
 # Print message
-print("+------------------------------------+")
-print("🧬 ABComp-Comparative Run Starting 🐍")
-print("+------------------------------------+\n")
+print("+--------------------------------------------+")
+print("🧬 ABComp-Comparative-Genomics Run Starting 🐍")
+print("+--------------------------------------------+\n")
 
 print("📂 GROUPs and STRAINs Detected :")
 group_strain_pairs = sorted(zip(GROUP, STRAIN), key=lambda x: x[0])
@@ -24,7 +24,7 @@ for g, s in group_strain_pairs:
 print("\n📌 REFERENCE Genome:")
 print(f" - Ref : {REF}\n")
 
-print("+------------------------------------+\n")
+print("+--------------------------------------------+\n")
 
 
 # Rule all
