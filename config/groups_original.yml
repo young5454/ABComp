@@ -1,17 +1,15 @@
-Group2:
-  - JE103
-  - JE109
-  - JE113
-  - JE117
-  - JE1
-  - JE133
-
-# Group3:
-#   - JE103
-#   - JE113
-#   - JE1
-# Group4:
-#   - JE109
-#   - JE117
-#   - JE133
+hvCRAB:
+  - A0006
+  - A0197
+  - A0220
+hvCRAB-MDR:
+  - A0062
+  - A0277
+  - A0292
+lvCRAB:
+  - A0274
+  - A0291
+lv:
+  - A0075
+  - A0137
 

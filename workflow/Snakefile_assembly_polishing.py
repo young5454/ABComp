@@ -12,7 +12,7 @@ GROUP, STRAIN = glob_wildcards(os.path.join(workspace, "0.Assembly/{group}_{stra
 # REF, = glob_wildcards(os.path.join(workspace, "0.Assembly/ref/genome/{ref}.fasta"))
 
 
-# Print Mesage
+# Print Message
 print("+------------------------------------------+")
 print("🧬 ABComp-Assembly-Polishing Run Starting 🐍")
 print("+------------------------------------------+\n")

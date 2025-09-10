@@ -13,3 +13,6 @@ readme.txt
 workflow/busco_downloads/
 workflow/.ipynb_checkpoints/
 workflow/scripts/.ipynb_checkpoints/
+workflow/envs/.ipynb_checkpoints/
+workflow/Snakefile_assembly_polishing.py
+workflow/Snakefile_comparative.py

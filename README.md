@@ -3,7 +3,7 @@
 [![Snakemake](https://img.shields.io/badge/snakemake-≥6.3.0-brightgreen.svg)](https://snakemake.github.io)
 ![GPLv3 License](https://img.shields.io/badge/license-GPLv3-blue.svg)
 
-<img src="docs/figures/ABComp.v2.png" width="1000px" align="center" />
+<img src="docs/Figures/ABComp_Fig1_V3.png" width="1000px" align="center" />
 
 # Getting Started
 ## Installation
@@ -75,13 +75,9 @@ The assembly polishing module will create a directory `trimmed/` inside each `{g
 `config.yml` is a default configuration setting for the overall Snakemake run. Make sure you specify the correct parameters and directory names of your preference. This file can be found in the `config/` directory. 
 
 ## Conda environments
-ABComp suggests single conda environment for a single software for avoiding potential dependency errors. Before running the pipeline, make sure you have all of the environments set with the provided yaml files. The yaml file of each individual environment can be found in `workflow/envs/`.
+ABComp suggests single conda environment for a single software for avoiding potential dependency errors. The yaml file of each individual environment can be found in `workflow/envs/`. When running the initial Snakemake run, the environments will be automatically created within `.snakemake/conda/`. This approach is suggested from Snakemake developers and considered best practice.
 
-ABComp provides a single bash script `create_envs.sh` that creates all of the required conda environments at once. You can run the script with the following command :
-
-```
-bash create_envs.sh 
-```
+Subsequent runs will not require the environment setup process but readily make use of created environments. 
 
 ## Pre-downloaded databases and files
 ABComp requires pre-downloaded databases for running **BUSCO** assembly assessment and **EggNOG-mapper**. Please refer to the website or Github of each software for more information :
@@ -98,16 +94,11 @@ BUSCO lineage datasets contain sets of highly conserved single-copy genes specif
 
 EggNOG-mapper databases consist of precomputed orthologous groups and functional annotations derived from a vast range of organisms. These databases enable the functional annotation of genes in your genome by mapping them to known orthologs and their associated functional data. Pre-downloading the necessary EggNOG-mapper databases ensures that the pipeline can efficiently perform functional annotation. 
 
-⚠️ Please carefully read through the **Setup** section in the [EggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.12#user-content-Setup). ABComp assumes you have downloaded all the annotation databases with running the script provided by EggNOG-mapper with a **default option**:
+⚠️ Please carefully read through the **Setup** section in the [EggNOG-mapper wiki](https://github.com/eggnogdb/eggnog-mapper/wiki/eggNOG-mapper-v2.1.5-to-v2.1.12#user-content-Setup). Make sure the lineage datasets are saved inside a directory named `data/`, inside your workspace directory.
 
-```bash
-download_eggnog_data.py
-```
-
-That is, a directory named `data/` must be created within your EggNOG-mapper directory, then the above script is run to download all databases provided by EggNOG-mapper.
 
 ### Trimmomatic adapter FASTAs
-For running trimmomatic, please save the required adapter sequence FASTAs you need to specify in the `adapters/` directory inside your workspace. The adapter FASTA files can be acquired from the [Trimmomatic github](https://github.com/usadellab/Trimmomatic).
+For running trimmomatic, please save the required adapter sequence FASTAs you need to specify in the `adapters/` directory inside your workspace directory. The adapter FASTA files can be acquired from the [Trimmomatic github](https://github.com/usadellab/Trimmomatic).
 
 # Running the Pipeline
 Once you have followed the Getting Started section and setup everything, you can finally start the Snakemake run !
@@ -119,8 +110,9 @@ The below code will start the assembly polishing pipeline with using up to 4 cor
 conda activate env_default
 
 snakemake \
-	--snakefile workflow/Snakefile_assembly_polishing.py \
+	--snakefile workflow/Snakefile_assembly_polishing_yaml.py \
 	--use-conda \
+	--conda-frontend conda
 	--cores 4
 ```
 
@@ -131,13 +123,14 @@ The below code will start the comparative genomics pipeline with using up to 4 c
 conda activate env_default
 
 snakemake \
-	--snakefile workflow/Snakefile_comparative.py \
+	--snakefile workflow/Snakefile_comparative_yaml.py \
 	--use-conda \
+	--conda-frontend conda \
 	--cores 4
 ```
 
 # Pathogenic marker discovery
-<img src="docs/figures/downstream.png" width="1000px" align="center" />
+<img src="docs/Figures/ABComp_Fig2.png" width="1000px" align="center" />
 The downstream pathogenic marker discovery module operates on the result of commandline BLASTp, therefore the user should first conduct the protein alignment of interest. In this example, let Group B’s core set is queried to the total annotation set of a single Strain X, to screen the presence of Group B's core set (query) within Strain X (subject).
 
 First, create the subject database :

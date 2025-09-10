@@ -2,7 +2,8 @@
 # Please adjust the parameters or names accordingly
 
 # Workspace directory
-workspace: "/workspace/ABComparative/results/"
+# workspace: "/workspace/ABComparative/results/"
+workspace: "/home/nathanyoung54/ABComp/ABComparative/results/"
 
 # FastQC
 fastqc_threads: 8
@@ -53,6 +54,7 @@ group_info: "groups_original.yml"
 move_faa_script: "move_faas.sh"
 
 # EggNOG-mapper
+emapper_data_dir: 'data/'
 emapper_core_pident: 35
 emapper_core_evalue: 0.001
 emapper_core_score: 60
